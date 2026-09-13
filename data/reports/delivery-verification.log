@@ -1,0 +1,64 @@
+{
+  "completed_analysis_checks": [
+    {
+      "job": "8a04438c12fd4a35a2670dd2112c8619",
+      "mode": "final",
+      "analyzed_frames": 5309,
+      "wheel_instances": 304,
+      "flagged_frames": 0,
+      "unknown_frames": 5309,
+      "all_decoded_frames_present": true,
+      "model_hashes": {
+        "car-detector.pt": "b578bab22d182ff8f2588fb8dce55a00acd321aae26483dcc8f6efdf7a88a8e4",
+        "wheel-segmenter.pt": "d9c23778159aeb30014f8b28c037449af804c4338e3b13d726a56998926deb30"
+      }
+    },
+    {
+      "job": "c342c55f714c410aa8699f9950c21bfe",
+      "mode": "final",
+      "analyzed_frames": 5293,
+      "wheel_instances": 1,
+      "flagged_frames": 0,
+      "unknown_frames": 5293,
+      "all_decoded_frames_present": true,
+      "model_hashes": {
+        "car-detector.pt": "b578bab22d182ff8f2588fb8dce55a00acd321aae26483dcc8f6efdf7a88a8e4",
+        "wheel-segmenter.pt": "d9c23778159aeb30014f8b28c037449af804c4338e3b13d726a56998926deb30"
+      }
+    },
+    {
+      "job": "68b5e686d744491196590165010c38e2",
+      "mode": "preview",
+      "analyzed_frames": 60,
+      "wheel_instances": 0,
+      "flagged_frames": 0,
+      "unknown_frames": 60,
+      "all_decoded_frames_present": false,
+      "model_hashes": {
+        "car-detector.pt": "b578bab22d182ff8f2588fb8dce55a00acd321aae26483dcc8f6efdf7a88a8e4",
+        "wheel-segmenter.pt": "d9c23778159aeb30014f8b28c037449af804c4338e3b13d726a56998926deb30"
+      }
+    },
+    {
+      "job": "548a34c2d69348c4b2ba576db83f5464",
+      "mode": "final",
+      "analyzed_frames": 17115,
+      "wheel_instances": 0,
+      "flagged_frames": 0,
+      "unknown_frames": 17115,
+      "all_decoded_frames_present": true,
+      "model_hashes": {}
+    }
+  ],
+  "unit_tests": "12 passed",
+  "typescript": "passed",
+  "production_build": "passed; 793 kB JS bundle warning",
+  "browser": "Source viewer, scenario controls, evaluation tables and schematic rendering inspected",
+  "not_verified": [
+    "independent event accuracy",
+    "confidence calibration",
+    "CARLA execution",
+    "multi-camera identity switches",
+    "automatic ghost occlusion"
+  ]
+}

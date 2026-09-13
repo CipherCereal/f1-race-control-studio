@@ -1,0 +1,13 @@
+{
+  "checked_at": 1789238877.5410292,
+  "heldout_frames": 17115,
+  "snapshot_images": 2545,
+  "manifests": [
+    "D:\\CHATGPT\\TRACKSHIFT CODEX\\ghost-rival-studio\\data\\datasets\\detector-prepared\\manifest.json",
+    "D:\\CHATGPT\\TRACKSHIFT CODEX\\ghost-rival-studio\\data\\datasets\\steering\\split-manifest.json",
+    "D:\\CHATGPT\\TRACKSHIFT CODEX\\ghost-rival-studio\\data\\datasets\\carparts\\wheel-training\\manifest.json"
+  ],
+  "candidates": [],
+  "method": "64-bit difference hash, Hamming <=3; candidate review required; transformed or cropped duplicates may be missed",
+  "scope": "Actual training/validation snapshots only; subsequent downloads were not used for training"
+}

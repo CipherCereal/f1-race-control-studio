@@ -1,0 +1,26 @@
+[
+  {
+    "path": "D:\\CHATGPT\\TRACKSHIFT CODEX\\ghost-rival-studio\\data\\models\\car-detector.pt",
+    "bytes": 5420634,
+    "sha256": "b578bab22d182ff8f2588fb8dce55a00acd321aae26483dcc8f6efdf7a88a8e4",
+    "role": "trained diagnostic model"
+  },
+  {
+    "path": "D:\\CHATGPT\\TRACKSHIFT CODEX\\ghost-rival-studio\\data\\models\\steering-wheel.pt",
+    "bytes": 3837987,
+    "sha256": "bcf0ad852e639bef03b4fdee43d533fd665a828aca01537aab8e0e013d865d8c",
+    "role": "trained diagnostic model"
+  },
+  {
+    "path": "D:\\CHATGPT\\TRACKSHIFT CODEX\\ghost-rival-studio\\data\\models\\wheel-segmenter.pt",
+    "bytes": 5956260,
+    "sha256": "d9c23778159aeb30014f8b28c037449af804c4338e3b13d726a56998926deb30",
+    "role": "trained diagnostic model"
+  },
+  {
+    "path": "D:\\CHATGPT\\TRACKSHIFT CODEX\\ghost-rival-studio\\data\\models\\yolo11n.pt",
+    "bytes": 5613764,
+    "sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+    "role": "pretrained baseline"
+  }
+]

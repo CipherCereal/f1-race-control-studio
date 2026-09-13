@@ -1,0 +1,24 @@
+{
+  "status": "completed diagnostic training",
+  "model": "YOLO11n",
+  "epochs": 3,
+  "image_size": 320,
+  "training_images": 209,
+  "validation_images": 168,
+  "split_limitation": "Same-broadcast chronological diagnostic split; independent-session validation unavailable",
+  "held_out_user_video": true,
+  "tire_model": "pending reviewed tire labels",
+  "keypoint_model": "pending reviewed wheel labels",
+  "track_model": "pending reviewed segmentation labels",
+  "event_calibration": "not calibrated",
+  "baseline_caveat": "Use class-agnostic IoU comparison; COCO class IDs differ from F1 dataset",
+  "metrics": {
+    "metrics/precision(B)": 0.6796413874644245,
+    "metrics/recall(B)": 0.7457415450212196,
+    "metrics/mAP50(B)": 0.7593435266500783,
+    "metrics/mAP50-95(B)": 0.4749138909002489,
+    "fitness": 0.4749138909002489
+  },
+  "finished_at": 1789203442.687657,
+  "checkpoint_sha256": "b578bab22d182ff8f2588fb8dce55a00acd321aae26483dcc8f6efdf7a88a8e4"
+}

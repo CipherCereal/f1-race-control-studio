@@ -1,0 +1,18 @@
+{
+  "job_id": "12c8f00f40854dcf998c557c976c34b6",
+  "frames": 77,
+  "contours": 77,
+  "compute": {
+    "device": "cuda:0",
+    "gpu_available": true,
+    "torch": "2.11.0+cu128",
+    "cuda": "12.8",
+    "name": "NVIDIA GeForce RTX 5050 Laptop GPU",
+    "vram_gb": 8.0
+  },
+  "source_asset_id": "0529ea07bf8a4b2eb91554de609440c9",
+  "source_start_frame": 1000,
+  "held_out": true,
+  "status": "passed",
+  "scope": "decode, CUDA batch inference including partial batch, frame ordering, timestamps, annotation and export; accuracy not evaluated"
+}

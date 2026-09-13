@@ -1,0 +1,29 @@
+{
+  "compute": {
+    "device": "cuda:0",
+    "gpu_available": true,
+    "torch": "2.11.0+cu128",
+    "cuda": "12.8",
+    "name": "NVIDIA GeForce RTX 5050 Laptop GPU",
+    "vram_gb": 8.0
+  },
+  "samples": 24,
+  "resolution": [
+    1280,
+    720
+  ],
+  "timings": {
+    "cpu": {
+      "seconds": 10.336219799995888,
+      "fps": 2.321932047150308,
+      "car_masks": 24,
+      "track_paths": 48
+    },
+    "cuda:0": {
+      "seconds": 1.71929739999905,
+      "fps": 13.959190539119795,
+      "car_masks": 24,
+      "track_paths": 48
+    }
+  }
+}

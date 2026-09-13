@@ -1,0 +1,19 @@
+{
+  "status": "experimental road-car training complete",
+  "metrics": {
+    "metrics/precision(B)": 0.6964067632722862,
+    "metrics/recall(B)": 0.2830188679245283,
+    "metrics/mAP50(B)": 0.42362531812328025,
+    "metrics/mAP50-95(B)": 0.24640461394424648,
+    "metrics/precision(M)": 0.6077817511111718,
+    "metrics/recall(M)": 0.35100161719086437,
+    "metrics/mAP50(M)": 0.4105295147213582,
+    "metrics/mAP50-95(M)": 0.139893465841176,
+    "fitness": 0.3862980797854225
+  },
+  "train_images": 320,
+  "validation_images": 34,
+  "scope": "road-car wheels; F1 generalization unvalidated",
+  "contact_points": "mask bottom is a proxy, not measured road contact",
+  "checkpoint_sha256": "d9c23778159aeb30014f8b28c037449af804c4338e3b13d726a56998926deb30"
+}

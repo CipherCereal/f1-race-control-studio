@@ -1,0 +1,16 @@
+[
+  {
+    "showcase": "singapore-2024",
+    "frame": 1500,
+    "car_contours": 0,
+    "track_paths": 2,
+    "farthest_image_y": 0.25
+  },
+  {
+    "showcase": "spain-2024",
+    "frame": 1500,
+    "car_contours": 4,
+    "track_paths": 2,
+    "farthest_image_y": 0.25
+  }
+]

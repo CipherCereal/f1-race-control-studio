@@ -1,0 +1,487 @@
+Prepared 377 images
+New https://pypi.org/project/ultralytics/8.4.149 available  Update with 'pip install -U ultralytics'
+Ultralytics 8.4.139  Python-3.11.9 torch-2.14.0+cpu CPU (Intel Core Ultra 7 255H)
+[34m[1mengine\trainer: [0magnostic_nms=False, amp=False, angle=1.0, augment=False, auto_augment=randaugment, batch=4, bgr=0.0, box=7.5, cache=False, cfg=None, channels_last=None, classes=None, close_mosaic=10, cls=0.5, cls_pw=0.0, cls_remap=True, compile=False, conf=None, copy_paste=0.0, copy_paste_mode=flip, cos_lr=False, cutmix=0.0, data=D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\data.yaml, degrees=0.0, deterministic=True, device=cpu, dfl=1.5, dgrad=0.5, dis=6.0, distill_model=None, dlam=1.0, dlog=1.0, dnn=False, dropout=0.0, dynamic=False, embed=None, end2end=None, epochs=3, erasing=0.4, exist_ok=True, fliplr=0.5, flipud=0.0, format=torchscript, fraction=1.0, freeze=10, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, imgsz=320, iou=0.7, keras=False, kobj=1.0, line_width=None, lr0=0.01, lrf=0.01, mask_ratio=4, max_det=300, mixup=0.0, mode=train, model=yolo11n.pt, momentum=0.937, mosaic=1.0, multi_scale=0.0, name=detector-training, nbs=64, nms=False, opset=None, optimize=False, optimizer=auto, overlap_mask=True, patience=100, perspective=0.0, plots=False, pose=12.0, pretrained=True, profile=False, project=D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\reports, quantize=None, rect=False, resume=False, retina_masks=False, rle=1.0, save=True, save_conf=False, save_crop=False, save_dir=D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\reports\detector-training, save_frames=False, save_json=False, save_period=-1, save_txt=False, scale=0.5, seed=42, shear=0.0, show=False, show_boxes=True, show_conf=True, show_labels=True, simplify=True, single_cls=False, source=None, split=val, stream_buffer=False, task=detect, time=None, tracker=tracktrack.yaml, translate=0.1, val=True, verbose=True, vid_stride=1, visualize=False, warmup_bias_lr=0.1, warmup_epochs=3.0, warmup_momentum=0.8, weight_decay=0.0005, workers=0, workspace=None
+Overriding model.yaml nc=80 with nc=1
+
+                   from  n    params  module                                       arguments                     
+  0                  -1  1       464  ultralytics.nn.modules.conv.Conv             [3, 16, 3, 2]                 
+  1                  -1  1      4672  ultralytics.nn.modules.conv.Conv             [16, 32, 3, 2]                
+  2                  -1  1      6640  ultralytics.nn.modules.block.C3k2            [32, 64, 1, False, 0.25]      
+  3                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                
+  4                  -1  1     26080  ultralytics.nn.modules.block.C3k2            [64, 128, 1, False, 0.25]     
+  5                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              
+  6                  -1  1     87040  ultralytics.nn.modules.block.C3k2            [128, 128, 1, True]           
+  7                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]              
+  8                  -1  1    346112  ultralytics.nn.modules.block.C3k2            [256, 256, 1, True]           
+  9                  -1  1    164608  ultralytics.nn.modules.block.SPPF            [256, 256, 5]                 
+ 10                  -1  1    249728  ultralytics.nn.modules.block.C2PSA           [256, 256, 1]                 
+ 11                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 12             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 13                  -1  1    111296  ultralytics.nn.modules.block.C3k2            [384, 128, 1, False]          
+ 14                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 15             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 16                  -1  1     32096  ultralytics.nn.modules.block.C3k2            [256, 64, 1, False]           
+ 17                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                
+ 18            [-1, 13]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 19                  -1  1     86720  ultralytics.nn.modules.block.C3k2            [192, 128, 1, False]          
+ 20                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              
+ 21            [-1, 10]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 22                  -1  1    378880  ultralytics.nn.modules.block.C3k2            [384, 256, 1, True]           
+ 23        [16, 19, 22]  1    430867  ultralytics.nn.modules.head.Detect           [1, 16, None, [64, 128, 256]] 
+YOLO11n summary: 182 layers, 2,590,035 parameters, 2,590,019 gradients, 6.5 GFLOPs
+
+Transferred 448/499 items from pretrained weights
+Freezing layer 'model.0.conv.weight'
+Freezing layer 'model.0.bn.weight'
+Freezing layer 'model.0.bn.bias'
+Freezing layer 'model.1.conv.weight'
+Freezing layer 'model.1.bn.weight'
+Freezing layer 'model.1.bn.bias'
+Freezing layer 'model.2.cv1.conv.weight'
+Freezing layer 'model.2.cv1.bn.weight'
+Freezing layer 'model.2.cv1.bn.bias'
+Freezing layer 'model.2.cv2.conv.weight'
+Freezing layer 'model.2.cv2.bn.weight'
+Freezing layer 'model.2.cv2.bn.bias'
+Freezing layer 'model.2.m.0.cv1.conv.weight'
+Freezing layer 'model.2.m.0.cv1.bn.weight'
+Freezing layer 'model.2.m.0.cv1.bn.bias'
+Freezing layer 'model.2.m.0.cv2.conv.weight'
+Freezing layer 'model.2.m.0.cv2.bn.weight'
+Freezing layer 'model.2.m.0.cv2.bn.bias'
+Freezing layer 'model.3.conv.weight'
+Freezing layer 'model.3.bn.weight'
+Freezing layer 'model.3.bn.bias'
+Freezing layer 'model.4.cv1.conv.weight'
+Freezing layer 'model.4.cv1.bn.weight'
+Freezing layer 'model.4.cv1.bn.bias'
+Freezing layer 'model.4.cv2.conv.weight'
+Freezing layer 'model.4.cv2.bn.weight'
+Freezing layer 'model.4.cv2.bn.bias'
+Freezing layer 'model.4.m.0.cv1.conv.weight'
+Freezing layer 'model.4.m.0.cv1.bn.weight'
+Freezing layer 'model.4.m.0.cv1.bn.bias'
+Freezing layer 'model.4.m.0.cv2.conv.weight'
+Freezing layer 'model.4.m.0.cv2.bn.weight'
+Freezing layer 'model.4.m.0.cv2.bn.bias'
+Freezing layer 'model.5.conv.weight'
+Freezing layer 'model.5.bn.weight'
+Freezing layer 'model.5.bn.bias'
+Freezing layer 'model.6.cv1.conv.weight'
+Freezing layer 'model.6.cv1.bn.weight'
+Freezing layer 'model.6.cv1.bn.bias'
+Freezing layer 'model.6.cv2.conv.weight'
+Freezing layer 'model.6.cv2.bn.weight'
+Freezing layer 'model.6.cv2.bn.bias'
+Freezing layer 'model.6.m.0.cv1.conv.weight'
+Freezing layer 'model.6.m.0.cv1.bn.weight'
+Freezing layer 'model.6.m.0.cv1.bn.bias'
+Freezing layer 'model.6.m.0.cv2.conv.weight'
+Freezing layer 'model.6.m.0.cv2.bn.weight'
+Freezing layer 'model.6.m.0.cv2.bn.bias'
+Freezing layer 'model.6.m.0.cv3.conv.weight'
+Freezing layer 'model.6.m.0.cv3.bn.weight'
+Freezing layer 'model.6.m.0.cv3.bn.bias'
+Freezing layer 'model.6.m.0.m.0.cv1.conv.weight'
+Freezing layer 'model.6.m.0.m.0.cv1.bn.weight'
+Freezing layer 'model.6.m.0.m.0.cv1.bn.bias'
+Freezing layer 'model.6.m.0.m.0.cv2.conv.weight'
+Freezing layer 'model.6.m.0.m.0.cv2.bn.weight'
+Freezing layer 'model.6.m.0.m.0.cv2.bn.bias'
+Freezing layer 'model.6.m.0.m.1.cv1.conv.weight'
+Freezing layer 'model.6.m.0.m.1.cv1.bn.weight'
+Freezing layer 'model.6.m.0.m.1.cv1.bn.bias'
+Freezing layer 'model.6.m.0.m.1.cv2.conv.weight'
+Freezing layer 'model.6.m.0.m.1.cv2.bn.weight'
+Freezing layer 'model.6.m.0.m.1.cv2.bn.bias'
+Freezing layer 'model.7.conv.weight'
+Freezing layer 'model.7.bn.weight'
+Freezing layer 'model.7.bn.bias'
+Freezing layer 'model.8.cv1.conv.weight'
+Freezing layer 'model.8.cv1.bn.weight'
+Freezing layer 'model.8.cv1.bn.bias'
+Freezing layer 'model.8.cv2.conv.weight'
+Freezing layer 'model.8.cv2.bn.weight'
+Freezing layer 'model.8.cv2.bn.bias'
+Freezing layer 'model.8.m.0.cv1.conv.weight'
+Freezing layer 'model.8.m.0.cv1.bn.weight'
+Freezing layer 'model.8.m.0.cv1.bn.bias'
+Freezing layer 'model.8.m.0.cv2.conv.weight'
+Freezing layer 'model.8.m.0.cv2.bn.weight'
+Freezing layer 'model.8.m.0.cv2.bn.bias'
+Freezing layer 'model.8.m.0.cv3.conv.weight'
+Freezing layer 'model.8.m.0.cv3.bn.weight'
+Freezing layer 'model.8.m.0.cv3.bn.bias'
+Freezing layer 'model.8.m.0.m.0.cv1.conv.weight'
+Freezing layer 'model.8.m.0.m.0.cv1.bn.weight'
+Freezing layer 'model.8.m.0.m.0.cv1.bn.bias'
+Freezing layer 'model.8.m.0.m.0.cv2.conv.weight'
+Freezing layer 'model.8.m.0.m.0.cv2.bn.weight'
+Freezing layer 'model.8.m.0.m.0.cv2.bn.bias'
+Freezing layer 'model.8.m.0.m.1.cv1.conv.weight'
+Freezing layer 'model.8.m.0.m.1.cv1.bn.weight'
+Freezing layer 'model.8.m.0.m.1.cv1.bn.bias'
+Freezing layer 'model.8.m.0.m.1.cv2.conv.weight'
+Freezing layer 'model.8.m.0.m.1.cv2.bn.weight'
+Freezing layer 'model.8.m.0.m.1.cv2.bn.bias'
+Freezing layer 'model.9.cv1.conv.weight'
+Freezing layer 'model.9.cv1.bn.weight'
+Freezing layer 'model.9.cv1.bn.bias'
+Freezing layer 'model.9.cv2.conv.weight'
+Freezing layer 'model.9.cv2.bn.weight'
+Freezing layer 'model.9.cv2.bn.bias'
+Freezing layer 'model.23.dfl.conv.weight'
+[34m[1mtrain: [0mFast image access  (ping: 0.10.0 ms, read: 1320.6342.9 MB/s, size: 1993.8 KB)
+
+[K[34m[1mtrain: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels... 19 images, 6 backgrounds, 0 corrupt: 9% ━─────────── 19/209 49.3it/s 0.1s<3.9s
+[K[34m[1mtrain: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels... 42 images, 14 backgrounds, 0 corrupt: 20% ━━────────── 42/209 103.2it/s 0.2s<1.6s
+[K[34m[1mtrain: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels... 60 images, 17 backgrounds, 0 corrupt: 28% ━━━───────── 60/209 111.8it/s 0.4s<1.3s
+[K[34m[1mtrain: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels... 81 images, 20 backgrounds, 0 corrupt: 38% ━━━━╸─────── 81/209 128.0it/s 0.5s<1.0s
+[K[34m[1mtrain: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels... 105 images, 25 backgrounds, 0 corrupt: 50% ━━━━━━────── 105/209 155.1it/s 0.6s<0.7s
+[K[34m[1mtrain: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels... 126 images, 27 backgrounds, 0 corrupt: 60% ━━━━━━━───── 126/209 167.9it/s 0.7s<0.5s
+[K[34m[1mtrain: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels... 154 images, 35 backgrounds, 0 corrupt: 73% ━━━━━━━━╸─── 154/209 197.1it/s 0.8s<0.3s
+[K[34m[1mtrain: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels... 180 images, 41 backgrounds, 0 corrupt: 86% ━━━━━━━━━━── 180/209 215.2it/s 0.9s<0.1s
+[K[34m[1mtrain: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels... 198 images, 43 backgrounds, 0 corrupt: 94% ━━━━━━━━━━━─ 198/209 199.2it/s 1.0s<0.1s
+[K[34m[1mtrain: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels... 209 images, 45 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 209/209 202.1it/s 1.0s
+[34m[1mtrain: [0mNew cache created: D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\train\labels.cache
+[34m[1mval: [0mFast image access  (ping: 0.10.0 ms, read: 1483.1507.2 MB/s, size: 1966.4 KB)
+
+[K[34m[1mval: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\val\labels... 16 images, 4 backgrounds, 0 corrupt: 9% ━─────────── 16/168 40.9it/s 0.1s<3.7s
+[K[34m[1mval: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\val\labels... 33 images, 7 backgrounds, 0 corrupt: 19% ━━────────── 33/168 72.0it/s 0.2s<1.9s
+[K[34m[1mval: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\val\labels... 54 images, 9 backgrounds, 0 corrupt: 32% ━━━╸──────── 54/168 105.3it/s 0.3s<1.1s
+[K[34m[1mval: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\val\labels... 76 images, 15 backgrounds, 0 corrupt: 45% ━━━━━─────── 76/168 130.1it/s 0.5s<0.7s
+[K[34m[1mval: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\val\labels... 99 images, 19 backgrounds, 0 corrupt: 58% ━━━━━━━───── 99/168 156.2it/s 0.6s<0.4s
+[K[34m[1mval: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\val\labels... 129 images, 29 backgrounds, 0 corrupt: 76% ━━━━━━━━━─── 129/168 198.3it/s 0.7s<0.2s
+[K[34m[1mval: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\val\labels... 156 images, 38 backgrounds, 0 corrupt: 92% ━━━━━━━━━━━─ 156/168 219.1it/s 0.8s<0.1s
+[K[34m[1mval: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\val\labels... 168 images, 42 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 168/168 209.4it/s 0.8s
+[34m[1mval: [0mNew cache created: D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\val\labels.cache
+[34m[1moptimizer:[0m 'optimizer=auto' found, ignoring 'lr0=0.01' and 'momentum=0.937' and determining best 'optimizer', 'lr0' and 'momentum' automatically... 
+[34m[1moptimizer:[0m AdamW(lr=0.002, momentum=0.9) with parameter groups 81 weight(decay=0.0), 88 weight(decay=0.0005), 87 bias(decay=0.0)
+Using 209 train, 168 val images for fraction=1.0 at imgsz=320
+Using 0 dataloader workers
+Logging results to [1mD:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\reports\detector-training[0m
+Starting training for 3 epochs...
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+
+[K        1/3         0G      1.121       2.87      1.088          5        320: 0% ──────────── 0/53  0.8s
+[K        1/3         0G      1.356      2.973      1.145         12        320: 1% ──────────── 1/53 1.7s/it 1.4s<1:27
+[K        1/3         0G      1.525       2.94      1.169         18        320: 3% ──────────── 2/53 1.0it/s 1.8s<49.8s
+[K        1/3         0G      1.466      2.962      1.157          9        320: 5% ╸─────────── 3/53 1.4it/s 2.3s<35.7s
+[K        1/3         0G      1.388      2.957       1.13         11        320: 7% ╸─────────── 4/53 1.6it/s 2.8s<30.9s
+[K        1/3         0G      1.476      3.038      1.132         18        320: 9% ━─────────── 5/53 1.7it/s 3.3s<28.2s
+[K        1/3         0G      1.471      3.053      1.124          9        320: 11% ━─────────── 6/53 1.8it/s 3.8s<25.9s
+[K        1/3         0G      1.483      3.047       1.13         10        320: 13% ━╸────────── 7/53 1.8it/s 4.3s<25.7s
+[K        1/3         0G      1.506      3.051      1.137         13        320: 15% ━╸────────── 8/53 2.0it/s 4.8s<22.7s
+[K        1/3         0G      1.465      3.054       1.12         18        320: 16% ━━────────── 9/53 1.9it/s 5.3s<23.1s
+[K        1/3         0G      1.426      3.055      1.111          5        320: 18% ━━────────── 10/53 2.0it/s 5.8s<21.2s
+[K        1/3         0G      1.426      3.037      1.107         18        320: 20% ━━────────── 11/53 2.1it/s 6.2s<19.8s
+[K        1/3         0G      1.469      3.046      1.114         11        320: 22% ━━╸───────── 12/53 2.0it/s 6.8s<20.8s
+[K        1/3         0G      1.476      3.049      1.123         15        320: 24% ━━╸───────── 13/53 2.0it/s 7.3s<20.5s
+[K        1/3         0G      1.461      3.028      1.116         10        320: 26% ━━━───────── 14/53 2.0it/s 7.8s<19.0s
+[K        1/3         0G      1.451      3.013       1.11         16        320: 28% ━━━───────── 15/53 1.9it/s 8.4s<20.1s
+[K        1/3         0G      1.452      3.009      1.118         14        320: 30% ━━━╸──────── 16/53 1.9it/s 8.9s<19.0s
+[K        1/3         0G      1.434      2.992      1.115          5        320: 32% ━━━╸──────── 17/53 1.9it/s 9.4s<18.5s
+[K        1/3         0G      1.415      2.964      1.106          7        320: 33% ━━━━──────── 18/53 2.0it/s 9.9s<17.7s
+[K        1/3         0G      1.409      2.968        1.1          5        320: 35% ━━━━──────── 19/53 2.0it/s 10.4s<17.0s
+[K        1/3         0G      1.408      2.941        1.1          8        320: 37% ━━━━╸─────── 20/53 1.9it/s 11.0s<17.5s
+[K        1/3         0G      1.425      2.943      1.109         19        320: 39% ━━━━╸─────── 21/53 2.0it/s 11.5s<16.0s
+[K        1/3         0G      1.436      2.919      1.112         11        320: 41% ━━━━╸─────── 22/53 2.0it/s 11.9s<15.2s
+[K        1/3         0G      1.418      2.892      1.105          8        320: 43% ━━━━━─────── 23/53 2.0it/s 12.5s<14.9s
+[K        1/3         0G      1.397      2.862      1.096          3        320: 45% ━━━━━─────── 24/53 2.0it/s 13.0s<14.8s
+[K        1/3         0G        1.4      2.842      1.102          8        320: 47% ━━━━━╸────── 25/53 2.0it/s 13.5s<14.1s
+[K        1/3         0G      1.431      2.846      1.106         37        320: 49% ━━━━━╸────── 26/53 2.0it/s 14.0s<13.3s
+[K        1/3         0G      1.427      2.822      1.104         11        320: 50% ━━━━━━────── 27/53 2.0it/s 14.5s<13.0s
+[K        1/3         0G      1.428      2.805      1.108          7        320: 52% ━━━━━━────── 28/53 2.0it/s 15.0s<12.8s
+[K        1/3         0G      1.437      2.811      1.112          8        320: 54% ━━━━━━╸───── 29/53 1.9it/s 15.6s<12.9s
+[K        1/3         0G      1.437      2.801      1.112         12        320: 56% ━━━━━━╸───── 30/53 1.8it/s 16.2s<12.7s
+[K        1/3         0G      1.429      2.787      1.108         18        320: 58% ━━━━━━━───── 31/53 1.9it/s 16.7s<11.6s
+[K        1/3         0G      1.436      2.778      1.111         15        320: 60% ━━━━━━━───── 32/53 2.0it/s 17.1s<10.3s
+[K        1/3         0G      1.434      2.755       1.11         15        320: 62% ━━━━━━━───── 33/53 2.1it/s 17.5s<9.4s
+[K        1/3         0G      1.429      2.741       1.11          4        320: 64% ━━━━━━━╸──── 34/53 2.1it/s 18.1s<9.1s
+[K        1/3         0G      1.427      2.711      1.113          5        320: 66% ━━━━━━━╸──── 35/53 2.2it/s 18.5s<8.3s
+[K        1/3         0G      1.418      2.684      1.108          8        320: 67% ━━━━━━━━──── 36/53 2.1it/s 19.0s<8.1s
+[K        1/3         0G      1.412      2.659      1.111          9        320: 69% ━━━━━━━━──── 37/53 2.2it/s 19.4s<7.1s
+[K        1/3         0G       1.42      2.635      1.115          8        320: 71% ━━━━━━━━╸─── 38/53 2.3it/s 19.8s<6.6s
+[K        1/3         0G      1.419      2.615      1.111         13        320: 73% ━━━━━━━━╸─── 39/53 2.4it/s 20.2s<5.9s
+[K        1/3         0G      1.405      2.596      1.108          5        320: 75% ━━━━━━━━━─── 40/53 2.3it/s 20.6s<5.6s
+[K        1/3         0G      1.393      2.577      1.102         13        320: 77% ━━━━━━━━━─── 41/53 2.2it/s 21.2s<5.4s
+[K        1/3         0G      1.386      2.557      1.102          7        320: 79% ━━━━━━━━━╸── 42/53 2.0it/s 21.8s<5.4s
+[K        1/3         0G      1.386      2.546      1.104         14        320: 81% ━━━━━━━━━╸── 43/53 2.2it/s 22.2s<4.6s
+[K        1/3         0G      1.377      2.535      1.103         12        320: 83% ━━━━━━━━━╸── 44/53 2.2it/s 22.6s<4.1s
+[K        1/3         0G      1.378      2.519      1.105          9        320: 84% ━━━━━━━━━━── 45/53 2.3it/s 23.0s<3.5s
+[K        1/3         0G      1.377        2.5      1.103         11        320: 86% ━━━━━━━━━━── 46/53 2.2it/s 23.5s<3.2s
+[K        1/3         0G      1.371      2.485      1.099         10        320: 88% ━━━━━━━━━━╸─ 47/53 2.3it/s 23.9s<2.6s
+[K        1/3         0G       1.37      2.473      1.097         13        320: 90% ━━━━━━━━━━╸─ 48/53 2.3it/s 24.4s<2.2s
+[K        1/3         0G      1.378      2.461      1.105         11        320: 92% ━━━━━━━━━━━─ 49/53 2.2it/s 24.8s<1.8s
+[K        1/3         0G      1.379      2.448      1.107          8        320: 94% ━━━━━━━━━━━─ 50/53 2.1it/s 25.4s<1.4s
+[K        1/3         0G       1.38      2.436      1.105         20        320: 96% ━━━━━━━━━━━╸ 51/53 2.2it/s 25.8s<0.9s
+[K        1/3         0G      1.379      2.424      1.107          6        320: 98% ━━━━━━━━━━━╸ 52/53 3.2it/s 26.0s<0.3s
+[K        1/3         0G      1.379      2.424      1.107          6        320: 100% ━━━━━━━━━━━━ 53/53 2.0it/s 26.0s
+
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 4% ╸─────────── 1/21 2.4s/it 0.7s<48.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 9% ━─────────── 2/21 1.8s/it 1.8s<33.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 14% ━╸────────── 3/21 1.3s/it 2.6s<23.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 19% ━━────────── 4/21 1.1s/it 3.4s<18.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 23% ━━╸───────── 5/21 1.2s/it 4.8s<18.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 28% ━━━───────── 6/21 1.0s/it 5.6s<15.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 33% ━━━━──────── 7/21 1.2it/s 6.2s<11.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 38% ━━━━╸─────── 8/21 1.2it/s 6.9s<10.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 9/21 1.4it/s 7.5s<8.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 47% ━━━━━╸────── 10/21 1.4it/s 8.2s<7.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 52% ━━━━━━────── 11/21 1.3it/s 9.0s<7.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 57% ━━━━━━╸───── 12/21 1.4it/s 9.7s<6.4s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 61% ━━━━━━━───── 13/21 1.5it/s 10.2s<5.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 66% ━━━━━━━━──── 14/21 1.6it/s 10.8s<4.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 71% ━━━━━━━━╸─── 15/21 1.6it/s 11.4s<3.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 76% ━━━━━━━━━─── 16/21 1.5it/s 12.2s<3.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 80% ━━━━━━━━━╸── 17/21 1.6it/s 12.7s<2.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 85% ━━━━━━━━━━── 18/21 2.0it/s 13.1s<1.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 90% ━━━━━━━━━━╸─ 19/21 2.0it/s 13.6s<1.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 20/21 2.1it/s 14.0s<0.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 21/21 1.4it/s 14.6s
+                   all        168        165      0.889       0.29      0.669       0.36
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+
+[K        2/3         0G      1.556      2.072      1.304         20        320: 0% ──────────── 0/53  0.6s
+[K        2/3         0G      1.433      1.961      1.235         15        320: 1% ──────────── 1/53 1.3s/it 1.0s<1:06
+[K        2/3         0G      1.425      1.931       1.25         11        320: 3% ──────────── 2/53 1.3it/s 1.4s<40.5s
+[K        2/3         0G       1.51      1.943      1.283         18        320: 5% ╸─────────── 3/53 1.5it/s 1.9s<34.5s
+[K        2/3         0G      1.453      1.952      1.249          8        320: 7% ╸─────────── 4/53 1.7it/s 2.4s<28.6s
+[K        2/3         0G       1.51      2.073      1.266          6        320: 9% ━─────────── 5/53 1.8it/s 2.8s<26.7s
+[K        2/3         0G      1.524      2.036      1.245         18        320: 11% ━─────────── 6/53 2.0it/s 3.2s<23.1s
+[K        2/3         0G      1.511      2.003      1.236         14        320: 13% ━╸────────── 7/53 1.9it/s 3.8s<23.7s
+[K        2/3         0G       1.49       1.97      1.219          7        320: 15% ━╸────────── 8/53 2.0it/s 4.3s<22.0s
+[K        2/3         0G      1.545      1.967      1.232         10        320: 16% ━━────────── 9/53 1.9it/s 4.9s<22.9s
+[K        2/3         0G      1.562      1.949      1.231         12        320: 18% ━━────────── 10/53 1.8it/s 5.5s<23.5s
+[K        2/3         0G      1.583      1.969      1.253          8        320: 20% ━━────────── 11/53 1.7it/s 6.2s<24.9s
+[K        2/3         0G      1.629      2.008      1.317          6        320: 22% ━━╸───────── 12/53 1.8it/s 6.7s<22.9s
+[K        2/3         0G       1.65      2.032      1.304          9        320: 24% ━━╸───────── 13/53 2.1it/s 7.1s<18.9s
+[K        2/3         0G      1.639      2.005      1.305          9        320: 26% ━━━───────── 14/53 2.3it/s 7.4s<16.6s
+[K        2/3         0G       1.63      1.988      1.288          9        320: 28% ━━━───────── 15/53 2.3it/s 7.9s<16.8s
+[K        2/3         0G      1.664      2.056      1.286          7        320: 30% ━━━╸──────── 16/53 2.3it/s 8.3s<16.3s
+[K        2/3         0G      1.632      2.037      1.278          4        320: 32% ━━━╸──────── 17/53 2.2it/s 8.8s<16.1s
+[K        2/3         0G      1.628      2.032      1.282          8        320: 33% ━━━━──────── 18/53 2.4it/s 9.2s<14.7s
+[K        2/3         0G      1.636       2.03       1.29          9        320: 35% ━━━━──────── 19/53 2.4it/s 9.6s<14.3s
+[K        2/3         0G      1.613      2.013      1.283         14        320: 37% ━━━━╸─────── 20/53 2.2it/s 10.2s<15.0s
+[K        2/3         0G      1.605      1.998      1.278         10        320: 39% ━━━━╸─────── 21/53 2.3it/s 10.6s<14.0s
+[K        2/3         0G      1.598      1.973      1.274         17        320: 41% ━━━━╸─────── 22/53 2.3it/s 11.0s<13.7s
+[K        2/3         0G      1.572      1.971      1.264          3        320: 43% ━━━━━─────── 23/53 2.1it/s 11.6s<14.3s
+[K        2/3         0G       1.58      1.972       1.27         10        320: 45% ━━━━━─────── 24/53 2.2it/s 12.0s<13.3s
+[K        2/3         0G      1.576      1.951      1.268         16        320: 47% ━━━━━╸────── 25/53 2.2it/s 12.5s<12.9s
+[K        2/3         0G      1.562      1.943      1.265          9        320: 49% ━━━━━╸────── 26/53 2.4it/s 12.8s<11.4s
+[K        2/3         0G      1.561      1.936      1.266         11        320: 50% ━━━━━━────── 27/53 2.4it/s 13.2s<10.7s
+[K        2/3         0G      1.573      1.927      1.264         14        320: 52% ━━━━━━────── 28/53 2.2it/s 13.8s<11.5s
+[K        2/3         0G      1.579      1.918      1.264         10        320: 54% ━━━━━━╸───── 29/53 2.1it/s 14.4s<11.4s
+[K        2/3         0G      1.611       1.98      1.258         11        320: 56% ━━━━━━╸───── 30/53 2.0it/s 14.9s<11.4s
+[K        2/3         0G       1.61      1.957      1.261         10        320: 58% ━━━━━━━───── 31/53 2.1it/s 15.4s<10.5s
+[K        2/3         0G      1.617       1.96      1.267         11        320: 60% ━━━━━━━───── 32/53 2.1it/s 15.8s<10.0s
+[K        2/3         0G       1.61      1.946      1.262         14        320: 62% ━━━━━━━───── 33/53 2.2it/s 16.2s<8.9s
+[K        2/3         0G      1.609      1.943      1.257         15        320: 64% ━━━━━━━╸──── 34/53 2.2it/s 16.7s<8.6s
+[K        2/3         0G      1.602      1.931      1.252         19        320: 66% ━━━━━━━╸──── 35/53 2.3it/s 17.1s<7.8s
+[K        2/3         0G      1.594      1.917      1.244         11        320: 67% ━━━━━━━━──── 36/53 2.2it/s 17.6s<7.6s
+[K        2/3         0G       1.59      1.905       1.24         12        320: 69% ━━━━━━━━──── 37/53 2.3it/s 18.0s<7.0s
+[K        2/3         0G      1.578      1.893      1.235         21        320: 71% ━━━━━━━━╸─── 38/53 2.2it/s 18.5s<6.7s
+[K        2/3         0G      1.573      1.886      1.232         19        320: 73% ━━━━━━━━╸─── 39/53 2.4it/s 18.8s<5.8s
+[K        2/3         0G      1.568      1.878       1.23         18        320: 75% ━━━━━━━━━─── 40/53 2.3it/s 19.3s<5.6s
+[K        2/3         0G      1.557      1.866      1.226         17        320: 77% ━━━━━━━━━─── 41/53 2.3it/s 19.7s<5.1s
+[K        2/3         0G      1.557      1.861       1.23         14        320: 79% ━━━━━━━━━╸── 42/53 2.2it/s 20.2s<4.9s
+[K        2/3         0G       1.55      1.845      1.228          8        320: 81% ━━━━━━━━━╸── 43/53 2.2it/s 20.7s<4.6s
+[K        2/3         0G      1.557      1.845       1.23         28        320: 83% ━━━━━━━━━╸── 44/53 2.2it/s 21.2s<4.2s
+[K        2/3         0G      1.551      1.838       1.23         12        320: 84% ━━━━━━━━━━── 45/53 2.3it/s 21.5s<3.5s
+[K        2/3         0G      1.553      1.837      1.234          7        320: 86% ━━━━━━━━━━── 46/53 2.1it/s 22.1s<3.3s
+[K        2/3         0G      1.555      1.839      1.233         36        320: 88% ━━━━━━━━━━╸─ 47/53 2.2it/s 22.6s<2.8s
+[K        2/3         0G      1.556      1.839      1.233          9        320: 90% ━━━━━━━━━━╸─ 48/53 2.1it/s 23.1s<2.4s
+[K        2/3         0G      1.563      1.846      1.233          8        320: 92% ━━━━━━━━━━━─ 49/53 2.0it/s 23.7s<2.0s
+[K        2/3         0G      1.552      1.836      1.229          9        320: 94% ━━━━━━━━━━━─ 50/53 2.0it/s 24.2s<1.5s
+[K        2/3         0G       1.55      1.832      1.226          8        320: 96% ━━━━━━━━━━━╸ 51/53 2.0it/s 24.7s<1.0s
+[K        2/3         0G      1.548      1.834      1.224          1        320: 98% ━━━━━━━━━━━╸ 52/53 2.6it/s 24.9s<0.4s
+[K        2/3         0G      1.548      1.834      1.224          1        320: 100% ━━━━━━━━━━━━ 53/53 2.1it/s 24.9s
+
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 4% ╸─────────── 1/21 1.7s/it 0.5s<34.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 9% ━─────────── 2/21 1.0s/it 1.1s<19.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 14% ━╸────────── 3/21 1.3it/s 1.6s<14.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 19% ━━────────── 4/21 1.5it/s 2.1s<11.4s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 23% ━━╸───────── 5/21 1.6it/s 2.6s<10.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 28% ━━━───────── 6/21 1.7it/s 3.2s<9.1s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 33% ━━━━──────── 7/21 1.8it/s 3.7s<7.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 38% ━━━━╸─────── 8/21 1.8it/s 4.2s<7.4s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 9/21 1.9it/s 4.7s<6.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 47% ━━━━━╸────── 10/21 2.0it/s 5.2s<5.6s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 52% ━━━━━━────── 11/21 2.1it/s 5.6s<4.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 57% ━━━━━━╸───── 12/21 2.0it/s 6.1s<4.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 61% ━━━━━━━───── 13/21 2.2it/s 6.5s<3.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 66% ━━━━━━━━──── 14/21 2.0it/s 7.1s<3.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 71% ━━━━━━━━╸─── 15/21 2.1it/s 7.5s<2.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 76% ━━━━━━━━━─── 16/21 2.1it/s 8.1s<2.4s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 80% ━━━━━━━━━╸── 17/21 2.3it/s 8.4s<1.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 85% ━━━━━━━━━━── 18/21 1.9it/s 9.3s<1.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 90% ━━━━━━━━━━╸─ 19/21 2.0it/s 9.8s<1.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 20/21 2.0it/s 10.3s<0.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 21/21 2.0it/s 10.7s
+                   all        168        165      0.671      0.661      0.714      0.434
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+
+[K        3/3         0G      1.741      2.074      1.471         10        320: 0% ──────────── 0/53  0.5s
+[K        3/3         0G      1.514      1.737      1.344         10        320: 1% ──────────── 1/53 1.3s/it 0.9s<1:09
+[K        3/3         0G      1.629      1.895      1.255         25        320: 3% ──────────── 2/53 1.3it/s 1.3s<39.9s
+[K        3/3         0G      1.651      1.824      1.259         13        320: 5% ╸─────────── 3/53 1.7it/s 1.6s<29.2s
+[K        3/3         0G      1.611      1.754       1.24         14        320: 7% ╸─────────── 4/53 1.5it/s 2.5s<32.0s
+[K        3/3         0G      1.579      1.771      1.229          8        320: 9% ━─────────── 5/53 1.2it/s 4.3s<38.6s
+[K        3/3         0G      1.611      1.743      1.218         19        320: 11% ━─────────── 6/53 1.2it/s 5.1s<38.0s
+[K        3/3         0G      1.561      1.713      1.197          7        320: 13% ━╸────────── 7/53 1.4it/s 5.7s<33.5s
+[K        3/3         0G      1.543      1.713      1.182          8        320: 15% ━╸────────── 8/53 1.3it/s 6.6s<35.4s
+[K        3/3         0G      1.516      1.716      1.162          9        320: 16% ━━────────── 9/53 1.3it/s 7.4s<34.6s
+[K        3/3         0G      1.572      1.802       1.15         14        320: 18% ━━────────── 10/53 1.0it/s 9.4s<41.4s
+[K        3/3         0G      1.544      1.776      1.134          8        320: 20% ━━────────── 11/53 1.0it/s 10.4s<40.5s
+[K        3/3         0G      1.519       1.74      1.127          9        320: 22% ━━╸───────── 12/53 1.1it/s 11.1s<36.1s
+[K        3/3         0G      1.501      1.741      1.118         12        320: 24% ━━╸───────── 13/53 1.4it/s 11.6s<27.8s
+[K        3/3         0G      1.474      1.763      1.117          5        320: 26% ━━━───────── 14/53 1.5it/s 12.2s<26.2s
+[K        3/3         0G      1.477      1.767       1.11         17        320: 28% ━━━───────── 15/53 1.4it/s 13.0s<26.3s
+[K        3/3         0G      1.443      1.747      1.097          7        320: 30% ━━━╸──────── 16/53 1.4it/s 13.8s<27.2s
+[K        3/3         0G      1.427      1.732      1.091         16        320: 32% ━━━╸──────── 17/53 1.6it/s 14.3s<22.4s
+[K        3/3         0G      1.418      1.721      1.087         18        320: 33% ━━━━──────── 18/53 1.6it/s 14.9s<21.4s
+[K        3/3         0G      1.426      1.721      1.084         39        320: 35% ━━━━──────── 19/53 1.9it/s 15.3s<18.1s
+[K        3/3         0G       1.45      1.727      1.088         27        320: 37% ━━━━╸─────── 20/53 1.8it/s 15.9s<18.2s
+[K        3/3         0G      1.452      1.727      1.089         13        320: 39% ━━━━╸─────── 21/53 1.6it/s 16.7s<19.4s
+[K        3/3         0G      1.495       1.74      1.093         25        320: 41% ━━━━╸─────── 22/53 1.5it/s 17.6s<20.8s
+[K        3/3         0G      1.504      1.739      1.104         10        320: 43% ━━━━━─────── 23/53 1.6it/s 18.2s<19.1s
+[K        3/3         0G       1.49      1.728      1.099         10        320: 45% ━━━━━─────── 24/53 1.6it/s 18.8s<18.3s
+[K        3/3         0G      1.473      1.754      1.101          2        320: 47% ━━━━━╸────── 25/53 1.8it/s 19.2s<15.5s
+[K        3/3         0G      1.462      1.741      1.105         14        320: 49% ━━━━━╸────── 26/53 1.9it/s 19.7s<14.3s
+[K        3/3         0G      1.465      1.731      1.116         10        320: 50% ━━━━━━────── 27/53 1.8it/s 20.3s<14.3s
+[K        3/3         0G      1.465      1.764      1.121          7        320: 52% ━━━━━━────── 28/53 1.8it/s 20.9s<14.2s
+[K        3/3         0G      1.473       1.77      1.127          8        320: 54% ━━━━━━╸───── 29/53 1.8it/s 21.5s<13.5s
+[K        3/3         0G      1.457       1.76      1.122         11        320: 56% ━━━━━━╸───── 30/53 1.9it/s 21.9s<12.3s
+[K        3/3         0G      1.459       1.78      1.123          4        320: 58% ━━━━━━━───── 31/53 2.0it/s 22.3s<10.9s
+[K        3/3         0G      1.453      1.766       1.12         14        320: 60% ━━━━━━━───── 32/53 2.2it/s 22.8s<9.7s
+[K        3/3         0G      1.462      1.812      1.123          5        320: 62% ━━━━━━━───── 33/53 2.0it/s 23.4s<10.1s
+[K        3/3         0G      1.452       1.83      1.119          4        320: 64% ━━━━━━━╸──── 34/53 1.9it/s 24.0s<10.0s
+[K        3/3         0G       1.46      1.847       1.12          8        320: 66% ━━━━━━━╸──── 35/53 1.8it/s 24.7s<10.2s
+[K        3/3         0G      1.451      1.836      1.117          7        320: 67% ━━━━━━━━──── 36/53 2.0it/s 25.0s<8.3s
+[K        3/3         0G      1.442      1.824      1.113         18        320: 69% ━━━━━━━━──── 37/53 2.0it/s 25.5s<7.9s
+[K        3/3         0G      1.443       1.82      1.117         12        320: 71% ━━━━━━━━╸─── 38/53 2.1it/s 25.9s<7.0s
+[K        3/3         0G      1.449      1.823      1.117         13        320: 73% ━━━━━━━━╸─── 39/53 2.2it/s 26.4s<6.4s
+[K        3/3         0G      1.457      1.833       1.12          8        320: 75% ━━━━━━━━━─── 40/53 2.0it/s 27.0s<6.5s
+[K        3/3         0G       1.45      1.823      1.119         15        320: 77% ━━━━━━━━━─── 41/53 1.8it/s 27.8s<6.7s
+[K        3/3         0G      1.455      1.821      1.123         10        320: 79% ━━━━━━━━━╸── 42/53 2.0it/s 28.2s<5.5s
+[K        3/3         0G      1.458      1.821      1.124          8        320: 81% ━━━━━━━━━╸── 43/53 1.8it/s 29.0s<5.6s
+[K        3/3         0G      1.463      1.812      1.129         11        320: 83% ━━━━━━━━━╸── 44/53 1.8it/s 29.5s<5.1s
+[K        3/3         0G      1.468      1.816      1.129         15        320: 84% ━━━━━━━━━━── 45/53 1.6it/s 30.3s<5.0s
+[K        3/3         0G      1.466      1.811      1.131         15        320: 86% ━━━━━━━━━━── 46/53 1.6it/s 31.0s<4.5s
+[K        3/3         0G       1.46      1.807      1.131          9        320: 88% ━━━━━━━━━━╸─ 47/53 1.8it/s 31.5s<3.4s
+[K        3/3         0G      1.462      1.805      1.132         15        320: 90% ━━━━━━━━━━╸─ 48/53 1.7it/s 32.2s<3.0s
+[K        3/3         0G      1.458      1.794      1.132          8        320: 92% ━━━━━━━━━━━─ 49/53 2.1it/s 32.5s<1.9s
+[K        3/3         0G      1.452      1.786      1.131         16        320: 94% ━━━━━━━━━━━─ 50/53 2.0it/s 33.0s<1.5s
+[K        3/3         0G      1.449      1.783      1.132         13        320: 96% ━━━━━━━━━━━╸ 51/53 2.0it/s 33.5s<1.0s
+[K        3/3         0G      1.441      1.787      1.126          1        320: 98% ━━━━━━━━━━━╸ 52/53 3.3it/s 33.7s<0.3s
+[K        3/3         0G      1.441      1.787      1.126          1        320: 100% ━━━━━━━━━━━━ 53/53 1.6it/s 33.7s
+
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 4% ╸─────────── 1/21 2.1s/it 0.6s<42.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 9% ━─────────── 2/21 1.0s/it 1.1s<19.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 14% ━╸────────── 3/21 1.2it/s 1.7s<15.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 19% ━━────────── 4/21 1.4it/s 2.2s<12.1s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 23% ━━╸───────── 5/21 1.6it/s 2.7s<9.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 28% ━━━───────── 6/21 1.7it/s 3.2s<9.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 33% ━━━━──────── 7/21 1.7it/s 3.8s<8.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 38% ━━━━╸─────── 8/21 1.7it/s 4.4s<7.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 9/21 1.8it/s 4.9s<6.6s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 47% ━━━━━╸────── 10/21 1.9it/s 5.4s<5.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 52% ━━━━━━────── 11/21 1.8it/s 6.0s<5.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 57% ━━━━━━╸───── 12/21 1.9it/s 6.5s<4.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 61% ━━━━━━━───── 13/21 1.8it/s 7.1s<4.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 66% ━━━━━━━━──── 14/21 1.9it/s 7.6s<3.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 71% ━━━━━━━━╸─── 15/21 1.8it/s 8.2s<3.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 76% ━━━━━━━━━─── 16/21 1.9it/s 8.7s<2.6s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 80% ━━━━━━━━━╸── 17/21 1.9it/s 9.2s<2.1s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 85% ━━━━━━━━━━── 18/21 1.9it/s 9.7s<1.6s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 90% ━━━━━━━━━━╸─ 19/21 1.9it/s 10.3s<1.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 20/21 1.9it/s 10.8s<0.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 21/21 1.9it/s 11.3s
+                   all        168        165      0.679      0.745      0.759      0.475
+
+3 epochs completed in 0.034 hours.
+Optimizer stripped from D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\reports\detector-training\weights\last.pt, 5.4MB
+Optimizer stripped from D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\reports\detector-training\weights\best.pt, 5.4MB
+
+Validating D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\reports\detector-training\weights\best.pt...
+Ultralytics 8.4.139  Python-3.11.9 torch-2.14.0+cpu CPU (Intel Core Ultra 7 255H)
+YOLO11n summary (fused): 101 layers, 2,582,347 parameters, 0 gradients, 6.4 GFLOPs
+
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 4% ╸─────────── 1/21 1.7s/it 0.5s<34.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 9% ━─────────── 2/21 1.0s/it 1.0s<19.1s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 14% ━╸────────── 3/21 1.3it/s 1.5s<14.1s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 19% ━━────────── 4/21 1.5it/s 2.0s<11.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 23% ━━╸───────── 5/21 1.6it/s 2.5s<9.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 28% ━━━───────── 6/21 1.7it/s 3.1s<8.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 33% ━━━━──────── 7/21 1.8it/s 3.6s<7.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 38% ━━━━╸─────── 8/21 2.0it/s 4.0s<6.4s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 9/21 2.0it/s 4.5s<5.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 47% ━━━━━╸────── 10/21 2.2it/s 4.8s<4.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 52% ━━━━━━────── 11/21 2.2it/s 5.3s<4.6s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 57% ━━━━━━╸───── 12/21 2.1it/s 5.8s<4.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 61% ━━━━━━━───── 13/21 2.2it/s 6.2s<3.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 66% ━━━━━━━━──── 14/21 2.2it/s 6.7s<3.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 71% ━━━━━━━━╸─── 15/21 2.2it/s 7.1s<2.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 76% ━━━━━━━━━─── 16/21 2.2it/s 7.6s<2.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 80% ━━━━━━━━━╸── 17/21 2.2it/s 8.0s<1.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 85% ━━━━━━━━━━── 18/21 2.2it/s 8.5s<1.4s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 90% ━━━━━━━━━━╸─ 19/21 2.2it/s 8.9s<0.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 20/21 2.2it/s 9.4s<0.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 21/21 2.1it/s 9.8s
+                   all        168        165       0.68      0.746      0.759      0.475
+Speed: 0.3ms preprocess, 12.9ms inference, 0.0ms loss, 1.0ms postprocess per image
+Ultralytics 8.4.139  Python-3.11.9 torch-2.14.0+cpu CPU (Intel Core Ultra 7 255H)
+YOLO11n summary (fused): 101 layers, 2,582,347 parameters, 0 gradients, 6.4 GFLOPs
+[34m[1mval: [0mFast image access  (ping: 0.10.0 ms, read: 1418.2130.0 MB/s, size: 1640.9 KB)
+
+[K[34m[1mval: [0mScanning D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\data\datasets\detector-prepared\val\labels.cache... 168 images, 42 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 168/168  0.0s
+
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 2% ──────────── 1/42 1.2it/s 0.2s<33.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 4% ╸─────────── 2/42 2.1it/s 0.5s<19.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 7% ╸─────────── 3/42 2.6it/s 0.7s<14.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 9% ━─────────── 4/42 3.4it/s 0.9s<11.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 11% ━─────────── 5/42 3.9it/s 1.1s<9.6s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 14% ━╸────────── 6/42 4.0it/s 1.4s<9.1s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━━────────── 7/42 3.9it/s 1.6s<8.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 19% ━━────────── 8/42 4.2it/s 1.9s<8.1s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 9/42 4.5it/s 2.0s<7.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 23% ━━╸───────── 10/42 4.4it/s 2.3s<7.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 26% ━━━───────── 11/42 4.1it/s 2.6s<7.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 28% ━━━───────── 12/42 4.3it/s 2.8s<7.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 30% ━━━╸──────── 13/42 4.6it/s 3.0s<6.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 33% ━━━━──────── 14/42 4.7it/s 3.2s<6.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 35% ━━━━──────── 15/42 4.5it/s 3.4s<6.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 38% ━━━━╸─────── 16/42 4.4it/s 3.7s<5.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 40% ━━━━╸─────── 17/42 4.7it/s 3.8s<5.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 18/42 5.0it/s 4.0s<4.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 45% ━━━━━─────── 19/42 4.8it/s 4.3s<4.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 47% ━━━━━╸────── 20/42 4.6it/s 4.5s<4.8s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 50% ━━━━━━────── 21/42 3.9it/s 5.0s<5.4s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 52% ━━━━━━────── 22/42 3.5it/s 5.3s<5.6s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 54% ━━━━━━╸───── 23/42 3.7it/s 5.5s<5.1s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 57% ━━━━━━╸───── 24/42 3.9it/s 5.8s<4.6s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 59% ━━━━━━━───── 25/42 4.1it/s 6.0s<4.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 61% ━━━━━━━───── 26/42 4.4it/s 6.2s<3.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 64% ━━━━━━━╸──── 27/42 4.4it/s 6.4s<3.4s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 66% ━━━━━━━━──── 28/42 4.4it/s 6.7s<3.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 69% ━━━━━━━━──── 29/42 4.4it/s 6.9s<2.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 71% ━━━━━━━━╸─── 30/42 5.1it/s 7.0s<2.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 73% ━━━━━━━━╸─── 31/42 5.1it/s 7.2s<2.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 76% ━━━━━━━━━─── 32/42 5.0it/s 7.4s<2.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 78% ━━━━━━━━━─── 33/42 4.8it/s 7.7s<1.9s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 80% ━━━━━━━━━╸── 34/42 4.7it/s 7.9s<1.7s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 83% ━━━━━━━━━━── 35/42 4.6it/s 8.1s<1.5s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 85% ━━━━━━━━━━── 36/42 4.5it/s 8.4s<1.3s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 88% ━━━━━━━━━━╸─ 37/42 4.3it/s 8.6s<1.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 90% ━━━━━━━━━━╸─ 38/42 4.1it/s 8.9s<1.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 92% ━━━━━━━━━━━─ 39/42 4.7it/s 9.1s<0.6s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 40/42 4.7it/s 9.3s<0.4s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 97% ━━━━━━━━━━━╸ 41/42 4.5it/s 9.5s<0.2s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 42/42 4.3it/s 9.7s
+                   all        168        165       0.68      0.746      0.759      0.475
+Speed: 0.3ms preprocess, 13.6ms inference, 0.0ms loss, 0.9ms postprocess per image
+{"status": "completed diagnostic training", "model": "YOLO11n", "epochs": 3, "image_size": 320, "training_images": 209, "validation_images": 168, "split_limitation": "Same-broadcast chronological diagnostic split; independent-session validation unavailable", "held_out_user_video": true, "tire_model": "pending reviewed tire labels", "keypoint_model": "pending reviewed wheel labels", "track_model": "pending reviewed segmentation labels", "event_calibration": "not calibrated", "baseline_caveat": "Use class-agnostic IoU comparison; COCO class IDs differ from F1 dataset", "metrics": {"metrics/precision(B)": 0.6796413874644245, "metrics/recall(B)": 0.7457415450212196, "metrics/mAP50(B)": 0.7593435266500783, "metrics/mAP50-95(B)": 0.4749138909002489, "fitness": 0.4749138909002489}, "finished_at": 1789203442.687657, "checkpoint_sha256": "b578bab22d182ff8f2588fb8dce55a00acd321aae26483dcc8f6efdf7a88a8e4"}

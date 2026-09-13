@@ -1,0 +1,19 @@
+{
+  "status": "diagnostic training complete",
+  "rejected_labels": 351,
+  "train_images": 1195,
+  "validation_images": 619,
+  "validation_mae_degrees": 38.60813522338867,
+  "constant_baseline_mae_degrees": 48.15814971923828,
+  "split": "recording prefix groups; validation used for model selection",
+  "independent_test": "not available",
+  "calibration": "not calibrated",
+  "epochs": 250,
+  "target": "steering wheel rotation",
+  "limitations": [
+    "dataset label provenance incomplete",
+    "real and game footage may coexist",
+    "not tire steering angle",
+    "no independent test set"
+  ]
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "video": "singapore-2024",
+    "frame": 500,
+    "cars": 1,
+    "cues": 22,
+    "curbs": 4
+  },
+  {
+    "video": "singapore-2024",
+    "frame": 1500,
+    "cars": 1,
+    "cues": 32,
+    "curbs": 6
+  },
+  {
+    "video": "singapore-2024",
+    "frame": 2500,
+    "cars": 1,
+    "cues": 22,
+    "curbs": 1
+  },
+  {
+    "video": "spain-2024",
+    "frame": 500,
+    "cars": 2,
+    "cues": 18,
+    "curbs": 2
+  },
+  {
+    "video": "spain-2024",
+    "frame": 1500,
+    "cars": 4,
+    "cues": 23,
+    "curbs": 8
+  },
+  {
+    "video": "spain-2024",
+    "frame": 2500,
+    "cars": 0,
+    "cues": 50,
+    "curbs": 21
+  }
+]

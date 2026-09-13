@@ -1,0 +1,17 @@
+.venv/
+node_modules/
+dist/
+__pycache__/
+*.pyc
+.sites-runtime/
+
+# Heavy video analyses, raw video uploads, cached telemetry, and large datasets
+data/analyses/
+data/uploads/
+data/datasets/
+data/recovery/
+data/openf1-cache/
+data/telemetry-cache/
+
+# Runtime server log redirects
+data/reports/*server*.log

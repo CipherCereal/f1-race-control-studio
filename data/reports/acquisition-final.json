@@ -1,0 +1,9 @@
+{
+  "checked_at": 1789238675.851879,
+  "csv_rows": 6632,
+  "present": 6632,
+  "missing": [],
+  "invalid_images": [],
+  "historical_errors": "acquisition-errors.json retained; current file verification supersedes transient rename failures",
+  "training_snapshot_unchanged": true
+}

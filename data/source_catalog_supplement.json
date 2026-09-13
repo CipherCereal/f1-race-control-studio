@@ -1,0 +1,44 @@
+[
+  {
+    "id": "carparts",
+    "url": "https://docs.ultralytics.com/datasets/segment/carparts-seg/",
+    "version": "downloaded carparts-seg.zip snapshot; archive hash in acquired-files.jsonl",
+    "license": "Ultralytics configuration AGPL-3.0; underlying image provenance not independently verified",
+    "kind": "road-car images",
+    "labels": [
+      "part polygons",
+      "wheel masks (class 22)"
+    ],
+    "status": "acquired",
+    "reason": "Experimental wheel training; road-car to F1 transfer unvalidated",
+    "perspective": "external road-car images",
+    "path": "D:/CHATGPT/TRACKSHIFT CODEX/ghost-rival-studio/data/datasets/carparts"
+  },
+  {
+    "id": "tum-racetracks",
+    "url": "https://github.com/TUMFTM/racetrack-database",
+    "license": "requires per-file review before reuse",
+    "kind": "circuit geometry reference",
+    "labels": [
+      "centerlines",
+      "approximate widths"
+    ],
+    "status": "reference",
+    "reason": "Approximate geometry; not measured legal masks or recorded driver trajectories"
+  },
+  {
+    "id": "wheels-tires-body",
+    "url": "https://universe.roboflow.com/wheeltirebody/wheels-tires-body/dataset/8",
+    "version": 8,
+    "license": "CC BY 4.0 (publisher declaration)",
+    "kind": "wheel segmentation candidate",
+    "labels": [
+      "wheel",
+      "tire",
+      "body",
+      "numeric classes"
+    ],
+    "status": "reference",
+    "reason": "375 source images; 1007 version-8 augmented images. F1 provenance unverified. Download page did not expose an archive in available web extraction; not acquired."
+  }
+]

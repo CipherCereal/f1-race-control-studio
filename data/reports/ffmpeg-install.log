@@ -1,0 +1,8 @@
+Collecting imageio-ffmpeg
+  Using cached imageio_ffmpeg-0.6.0-py3-none-win_amd64.whl.metadata (1.5 kB)
+Using cached imageio_ffmpeg-0.6.0-py3-none-win_amd64.whl (31.2 MB)
+Installing collected packages: imageio-ffmpeg
+Successfully installed imageio-ffmpeg-0.6.0
+
+[notice] A new release of pip is available: 24.0 -> 26.2.1
+[notice] To update, run: D:\CHATGPT\TRACKSHIFT CODEX\ghost-rival-studio\.venv\Scripts\python.exe -m pip install --upgrade pip

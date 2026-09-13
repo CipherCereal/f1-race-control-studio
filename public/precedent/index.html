@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRECEDENT — F1 Stewarding & Strategy Console</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
+    :root {
+      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+      --font-display: "Chakra Petch", "JetBrains Mono", sans-serif;
+      --neon-red: #ef4444;
+      --neon-red-glow: rgba(239, 68, 68, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: #030001;
+      background-image: radial-gradient(circle at 60% 25%, #190407 0%, #0d0204 50%, #020001 100%);
+      color: #f4f4f5;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .display-font {
+      font-family: var(--font-display);
+      letter-spacing: 0.05em;
+    }
+
+    /* F1 Pit Wall Neon Red Outline Frame */
+    .f1-panel {
+      background-color: #08080a;
+      border: 1.5px solid #ef4444;
+      border-radius: 0.875rem; /* 14px */
+      box-shadow: 0 0 20px -4px var(--neon-red-glow), 0 15px 25px -10px rgba(0,0,0,0.85);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .f1-subcard {
+      background-color: #0c0c10;
+      border: 1px solid #23080b;
+      border-radius: 0.5rem;
+    }
+
+    .f1-divider-red {
+      border-color: #26080c;
+    }
+
+    /* Fullscreen Mode */
+    .is-fullscreen {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 100 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      max-height: 100vh !important;
+      border-radius: 0 !important;
+      border: 2px solid #ef4444 !important;
+      background-color: #060608 !important;
+      padding: 1.5rem 2.5rem !important;
+      overflow-y: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      box-shadow: inset 0 0 40px rgba(239, 68, 68, 0.15) !important;
+    }
+
+    /* Drag & Drop Visuals */
+    .draggable-card {
+      cursor: grab;
+      user-select: none;
+    }
+    .draggable-card:active {
+      cursor: grabbing;
+    }
+    .draggable-card.dragging {
+      opacity: 0.35;
+      border-style: dashed;
+      border-color: #ef4444;
+    }
+
+    .drop-zone {
+      min-height: 180px;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .drop-zone.drag-over {
+      background-color: rgba(239, 68, 68, 0.04);
+      border: 2px dashed #ef4444 !important;
+      border-radius: 0.875rem;
+    }
+
+    /* F1 Pit-Box Button */
+    .f1-box-btn {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      border: 1px solid rgba(239, 68, 68, 0.6);
+      background-color: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      border-radius: 4px;
+      padding: 3px 8px;
+      transition: all 0.15s ease;
+    }
+    .f1-box-btn:hover {
+      background-color: rgba(239, 68, 68, 0.25);
+      border-color: #ef4444;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Range Sliders */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: #1c0c0f;
+      border: 1px solid #330c11;
+      border-radius: 9999px;
+      height: 4px;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 14px;
+      width: 14px;
+      border-radius: 50%;
+      background: #ef4444;
+      cursor: pointer;
+      border: 2px solid #08080a;
+      box-shadow: 0 0 6px #ef4444;
+      transition: transform 0.1s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Minimal Scrollbars */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #060608; }
+    ::-webkit-scrollbar-thumb { background: #2b0b10; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
+
+    /* SVG Radial Gauge Animation */
+    .gauge-circle {
+      transition: stroke-dashoffset 0.6s ease-out;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+
+    /* Tab active indicator */
+    .tab-btn.active {
+      background-color: rgba(239, 68, 68, 0.2);
+      border-color: #ef4444;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex antialiased selection:bg-red-900 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- SLEEK LEFT SIDEBAR (Controls, What-If, Radial Dial, Incident Switcher)     -->
+  <!-- ========================================================================= -->
+  <aside id="mainSidebar" class="w-80 shrink-0 bg-[#07070a]/95 border-r border-[#26080c] flex flex-col h-screen sticky top-0 z-40 overflow-y-auto backdrop-blur-md">
+    
+    <!-- Sidebar Header / Brand -->
+    <div class="p-4 border-b f1-divider-red flex items-center justify-between">
+      <a href="javascript:void(0)" onclick="resetToEmptyState()" class="flex items-center space-x-2.5 group">
+        <div class="w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center font-extrabold text-white text-xs shadow-[0_0_10px_rgba(239,68,68,0.6)] group-hover:bg-red-500 transition">
+          P
+        </div>
+        <div>
+          <div class="flex items-center space-x-1.5">
+            <span class="display-font font-bold text-white text-sm tracking-wider">PRECEDENT</span>
+            <span class="text-[9px] mono px-1.5 py-0.2 rounded bg-red-950 text-red-400 border border-red-900 font-semibold">
+              V2
+            </span>
+          </div>
+          <p class="text-[10px] text-zinc-500 font-mono">F1 STEWARDING PIT WALL</p>
+        </div>
+      </a>
+      <div class="flex items-center space-x-1.5 px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-600/50 text-[10px] font-mono text-emerald-400 font-bold">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>LIVE</span>
+      </div>
+    </div>
+
+    <!-- Sidebar Section 1: Incident Switcher & Quick Demo Cases -->
+    <div class="p-4 border-b f1-divider-red space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-zinc-400 font-bold">INCIDENT SELECTOR</span>
+        <button id="resetLayoutBtn" onclick="resetLayoutToDefault()" title="Reset to default" class="text-[10px] font-mono text-zinc-500 hover:text-red-400 transition">
+          RESET
+        </button>
+      </div>
+
+      <div class="relative">
+        <select id="incidentSelect" onchange="onIncidentSelected(this.value)" aria-label="Select F1 Incident" class="w-full bg-zinc-950 border border-red-900/60 text-xs font-mono text-zinc-200 rounded-lg pl-2.5 pr-7 py-2 focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none appearance-none cursor-pointer hover:border-red-600 transition shadow-inner">
+          <option value="">-- CHOOSE INCIDENT --</option>
+        </select>
+        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-red-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+      </div>
+
+      <!-- Quick Curated Scenario Chips -->
+      <div class="space-y-1.5 pt-1">
+        <span class="text-[9px] font-mono text-zinc-500 uppercase tracking-wider block">CURATED AUDITS:</span>
+        <div class="grid grid-cols-1 gap-1.5 text-xs font-mono">
+          <button onclick="loadDemoScenario('piastri_lawson_brazil_2024')" class="text-left px-2.5 py-1.5 rounded bg-zinc-950/80 border border-zinc-900 hover:border-red-600 text-zinc-300 hover:text-white transition flex items-center justify-between">
+            <span class="truncate">Piastri vs Lawson</span>
+            <span class="text-[9px] font-bold text-red-400 shrink-0">SPLIT</span>
+          </button>
+          <button onclick="loadDemoScenario('tsunoda_albon_monza_2024')" class="text-left px-2.5 py-1.5 rounded bg-zinc-950/80 border border-zinc-900 hover:border-emerald-600 text-zinc-300 hover:text-white transition flex items-center justify-between">
+            <span class="truncate">Tsunoda vs Albon</span>
+            <span class="text-[9px] font-bold text-emerald-400 shrink-0">CLEAN</span>
+          </button>
+          <button onclick="loadDemoScenario('alonso_russell_melbourne_2024')" class="text-left px-2.5 py-1.5 rounded bg-zinc-950/80 border border-zinc-900 hover:border-yellow-600 text-zinc-300 hover:text-white transition flex items-center justify-between">
+            <span class="truncate">Alonso vs Russell</span>
+            <span class="text-[9px] font-bold text-yellow-400 shrink-0">NOVEL</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Section 2: Circular Apex Overlap Radial Dial Gauge (TIRE STATUS style) -->
+    <div id="widgetOverlapDial" class="p-4 border-b f1-divider-red space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-[10px] font-mono font-bold text-red-500 uppercase tracking-widest">APEX OVERLAP GAUGE</span>
+        <button onclick="toggleFullscreen('widgetOverlapDial')" title="Fullscreen" class="fullscreen-btn text-zinc-500 hover:text-white">
+          <i data-lucide="maximize-2" class="w-3 h-3"></i>
+        </button>
+      </div>
+
+      <!-- Circular Progress Dial -->
+      <div class="flex items-center justify-center py-1">
+        <div class="relative w-28 h-28 flex items-center justify-center">
+          <svg class="w-full h-full" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="38" stroke="#1a0a0d" stroke-width="8" fill="transparent" />
+            <circle id="gaugeProgressRing" class="gauge-circle" cx="50" cy="50" r="38" stroke="#ef4444" stroke-width="8" fill="transparent" stroke-dasharray="238.76" stroke-dashoffset="119.38" stroke-linecap="round" />
+          </svg>
+          <div class="absolute flex flex-col items-center justify-center text-center">
+            <span class="text-[8px] font-mono text-zinc-500 font-bold tracking-widest uppercase">APEX</span>
+            <span id="gaugeOverlapVal" class="display-font text-xl font-extrabold text-white">48%</span>
+            <span id="gaugeThresholdSub" class="text-[8px] font-mono text-yellow-400 font-semibold">50% MIN</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-1.5 text-[11px] font-mono">
+        <div class="flex justify-between py-0.5 border-b border-zinc-900">
+          <span class="text-zinc-500">CONDITION:</span>
+          <span id="gaugeConditionPill" class="font-bold text-red-400">CRITICAL DEFICIT</span>
+        </div>
+        <div class="flex justify-between py-0.5 border-b border-zinc-900">
+          <span class="text-zinc-500">DELTA:</span>
+          <span id="gaugeSpeedDelta" class="text-white font-semibold">28.0 km/h</span>
+        </div>
+        <div class="flex justify-between py-0.5 border-b border-zinc-900">
+          <span class="text-zinc-500">THRESHOLD:</span>
+          <span id="gaugeThresholdStatus" class="text-yellow-400">BEHIND (-2%)</span>
+        </div>
+        <div class="flex justify-between py-0.5">
+          <span class="text-zinc-500">ESTIMATE:</span>
+          <span id="stewardVerdictEstimate" class="text-red-400 font-bold">PENALTY RISK</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Section 3: What-If Telemetry Tuning Sliders -->
+    <div id="widgetWhatIf" class="p-4 border-b f1-divider-red space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-[10px] font-mono font-bold text-white uppercase tracking-widest display-font">WHAT-IF TUNING LAB</span>
+        <div class="flex items-center space-x-1.5">
+          <button onclick="resetSimulatorToTarget()" class="f1-box-btn py-0.5 px-2">RESET</button>
+          <button onclick="toggleFullscreen('widgetWhatIf')" title="Fullscreen" class="fullscreen-btn text-zinc-500 hover:text-white">
+            <i data-lucide="maximize-2" class="w-3 h-3"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sliders -->
+      <div class="space-y-2.5 font-mono text-xs">
+        <div class="space-y-1">
+          <div class="flex justify-between text-[10px]">
+            <span class="text-zinc-400">APEX OVERLAP:</span>
+            <span id="simOverlapVal" class="text-white font-bold">48%</span>
+          </div>
+          <input type="range" id="simOverlapInput" min="0" max="100" value="48" oninput="onSimulatorSliderInput()" class="w-full cursor-pointer" />
+          <div class="flex justify-between text-[9px] text-zinc-500">
+            <span>0%</span>
+            <span class="text-yellow-400 font-semibold">50% Cockpit</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex justify-between text-[10px]">
+            <span class="text-zinc-400">CLOSING SPEED:</span>
+            <span id="simSpeedVal" class="text-white font-bold">28 km/h</span>
+          </div>
+          <input type="range" id="simSpeedInput" min="0" max="60" value="28" oninput="onSimulatorSliderInput()" class="w-full cursor-pointer" />
+          <div class="flex justify-between text-[9px] text-zinc-500">
+            <span>0 km/h</span>
+            <span>30 km/h</span>
+            <span>60 km/h</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-1 text-[11px]">
+          <label class="flex items-center space-x-1.5 cursor-pointer">
+            <input type="checkbox" id="simInsideInput" checked onchange="onSimulatorSliderInput()" class="rounded bg-zinc-900 border-zinc-700 text-red-500 focus:ring-red-500" />
+            <span class="text-zinc-300">Held Inside</span>
+          </label>
+          <label class="flex items-center space-x-1.5 cursor-pointer">
+            <input type="checkbox" id="simContactInput" checked onchange="onSimulatorSliderInput()" class="rounded bg-zinc-900 border-zinc-700 text-red-500 focus:ring-red-500" />
+            <span class="text-zinc-300">Contact</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Section 4: View Tabs (Less Clutter Filter) -->
+    <div class="p-4 space-y-2 text-xs font-mono mt-auto">
+      <span class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">WORKSPACE FOCUS:</span>
+      <div class="grid grid-cols-2 gap-1.5">
+        <button id="viewTabAll" onclick="switchViewMode('all')" class="tab-btn active px-2 py-1.5 rounded bg-zinc-950 border border-zinc-900 text-zinc-300 text-[10px] font-bold uppercase transition">
+          Full Console
+        </button>
+        <button id="viewTabTelem" onclick="switchViewMode('telem')" class="tab-btn px-2 py-1.5 rounded bg-zinc-950 border border-zinc-900 text-zinc-300 text-[10px] font-bold uppercase transition">
+          Telemetry & 2D
+        </button>
+        <button id="viewTabThreat" onclick="switchViewMode('threat')" class="tab-btn px-2 py-1.5 rounded bg-zinc-950 border border-zinc-900 text-zinc-300 text-[10px] font-bold uppercase transition">
+          Threat Monitor
+        </button>
+        <button id="viewTabTower" onclick="switchViewMode('tower')" class="tab-btn px-2 py-1.5 rounded bg-zinc-950 border border-zinc-900 text-zinc-300 text-[10px] font-bold uppercase transition">
+          Timing Tower
+        </button>
+      </div>
+
+      <div class="pt-2">
+        <a id="fiaDocBtn" href="#" target="_blank" rel="noopener noreferrer" class="f1-box-btn w-full block text-center py-1.5">
+          OFFICIAL FIA PDF ↗
+        </a>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN WORKSPACE VIEW (Clean, Uncluttered Pit Wall Displays)                -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto p-4 sm:p-6 lg:p-7 space-y-5">
+
+    <!-- TOP TELEMETRY STATUS BAR -->
+    <header class="f1-panel p-3 sm:p-4 flex flex-wrap items-center justify-between gap-4 bg-zinc-950/90 shrink-0">
+      
+      <!-- Event Subtitle -->
+      <div class="flex items-center space-x-3">
+        <div class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></div>
+        <div>
+          <h1 id="grandPrixTitle" class="display-font text-base sm:text-lg font-extrabold text-white tracking-wide">
+            São Paulo Grand Prix
+          </h1>
+          <p id="circuitSubText" class="text-[11px] font-mono text-zinc-400">
+            Autódromo José Carlos Pace • RACE
+          </p>
+        </div>
+      </div>
+
+      <!-- Giant Lap & Turn Readout -->
+      <div class="flex items-center space-x-6 text-center">
+        <div>
+          <div class="flex items-baseline justify-center space-x-1">
+            <span id="headerLapCurrent" class="display-font text-2xl sm:text-3xl font-extrabold text-white">64</span>
+            <span class="text-zinc-500 font-mono text-sm">/</span>
+            <span id="headerLapTotal" class="display-font text-sm font-bold text-zinc-400">71</span>
+          </div>
+          <span class="text-[9px] font-mono uppercase tracking-widest text-zinc-500 block -mt-0.5">LAP</span>
+        </div>
+
+        <div class="h-6 w-px bg-zinc-800"></div>
+
+        <div>
+          <span id="headerTurnNumber" class="display-font text-2xl sm:text-3xl font-extrabold text-yellow-400">T1</span>
+          <span id="headerTurnType" class="text-[9px] font-mono uppercase tracking-widest text-zinc-500 block -mt-0.5">HAIRPIN</span>
+        </div>
+      </div>
+
+      <!-- Sensors & Flag -->
+      <div class="flex items-center space-x-3 text-xs font-mono">
+        <div class="hidden md:flex items-center space-x-3 text-zinc-400 text-[11px]">
+          <span>TRACK <strong id="envTrackTemp" class="text-white">48.2C</strong></span>
+          <span>AIR <strong id="envAirTemp" class="text-white">23.2C</strong></span>
+        </div>
+
+        <div id="flagStatusBadge" class="flex items-center space-x-1.5 px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-500 text-emerald-300 text-[11px] font-bold uppercase tracking-wider">
+          <span class="w-2 h-2 bg-emerald-400 inline-block"></span>
+          <span id="flagStatusText">GREEN FLAG</span>
+        </div>
+
+        <button onclick="toggleFullscreen('pitWallConsole')" title="Toggle Console Fullscreen" class="fullscreen-btn p-1.5 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white transition border border-zinc-800">
+          <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+    </header>
+
+    <!-- ======================================================================= -->
+    <!-- VIEW A: EMPTY DISCOVERY SCREEN                                          -->
+    <!-- ======================================================================= -->
+    <div id="emptyStateView" class="f1-panel p-8 sm:p-12 text-center max-w-3xl mx-auto space-y-8 my-auto">
+      <div class="space-y-3">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-red-900/80 bg-red-950/40 text-red-400 text-xs font-mono">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+          <span>SELECT AN INCIDENT FROM THE SIDEBAR TO BEGIN AUDIT</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white display-font">
+          F1 STEWARDING PIT WALL
+        </h2>
+        <p class="text-sm text-zinc-400 font-normal leading-relaxed max-w-xl mx-auto">
+          Explore synchronized multi-car telemetry traces, apex overlap geometry, and historical ruling consistency powered by SQLite 7D vector math.
+        </p>
+      </div>
+
+      <!-- Quick Curated Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+        <div onclick="loadDemoScenario('piastri_lawson_brazil_2024')" class="f1-subcard p-4 cursor-pointer hover:border-red-500 transition">
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40 font-bold block w-fit mb-2">SPLIT VERDICT</span>
+          <h4 class="text-sm font-bold text-white display-font">Piastri vs Lawson</h4>
+          <p class="text-xs text-zinc-400 mt-1">Brazil Sprint • Turn 1</p>
+        </div>
+        <div onclick="loadDemoScenario('tsunoda_albon_monza_2024')" class="f1-subcard p-4 cursor-pointer hover:border-emerald-500 transition">
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold block w-fit mb-2">CLEAN MATCH</span>
+          <h4 class="text-sm font-bold text-white display-font">Tsunoda vs Albon</h4>
+          <p class="text-xs text-zinc-400 mt-1">Monza GP • Turn 4</p>
+        </div>
+        <div onclick="loadDemoScenario('alonso_russell_melbourne_2024')" class="f1-subcard p-4 cursor-pointer hover:border-yellow-500 transition">
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-300 border border-yellow-500/40 font-bold block w-fit mb-2">NOVEL INCIDENT</span>
+          <h4 class="text-sm font-bold text-white display-font">Alonso vs Russell</h4>
+          <p class="text-xs text-zinc-400 mt-1">Melbourne GP • Turn 6</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- VIEW B: ACTIVE WORKSPACE (Structured, Sleek, Uncluttered)               -->
+    <!-- ======================================================================= -->
+    <div id="activeWorkspaceView" class="hidden space-y-5">
+      
+      <div id="pitWallConsole" class="space-y-5">
+
+        <!-- SECTION 1: DRIVER BATTLE CARDS & STRATEGY WALL -->
+        <section id="sectionDrivers" class="f1-panel p-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
+          
+          <!-- Attacker & Defender Drivers -->
+          <div class="lg:col-span-7 space-y-3.5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              
+              <!-- Attacker Driver Card -->
+              <div class="f1-subcard p-3.5 space-y-2 border-l-2 border-l-red-500">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-red-400 font-semibold flex items-center space-x-1">
+                    <span>ATTACKER</span>
+                    <span id="attackerNumBadge" class="px-1 py-0.2 rounded bg-red-950 text-red-300">#81</span>
+                  </span>
+                  <span class="display-font text-base font-bold text-white">P2</span>
+                </div>
+                <h3 id="attackerDriverName" class="text-base font-extrabold text-white display-font tracking-wide">
+                  PIASTRI
+                </h3>
+                <div class="grid grid-cols-2 gap-2 text-[11px] font-mono text-zinc-400">
+                  <div>
+                    <span class="text-[9px] text-zinc-500 block uppercase">SPEED DELTA</span>
+                    <span id="driverAtkSpeed" class="text-white font-semibold">28.0 km/h</span>
+                  </div>
+                  <div>
+                    <span class="text-[9px] text-zinc-500 block uppercase">APEX LINE</span>
+                    <span id="driverAtkLine" class="text-yellow-400 font-semibold">INSIDE</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Defender Driver Card -->
+              <div class="f1-subcard p-3.5 space-y-2 border-l-2 border-l-sky-500">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-sky-400 font-semibold flex items-center space-x-1">
+                    <span>DEFENDER</span>
+                    <span id="defenderNumBadge" class="px-1 py-0.2 rounded bg-sky-950 text-sky-300">#30</span>
+                  </span>
+                  <span class="display-font text-base font-bold text-white">P3</span>
+                </div>
+                <h3 id="defenderDriverName" class="text-base font-extrabold text-white display-font tracking-wide">
+                  LAWSON
+                </h3>
+                <div class="grid grid-cols-2 gap-2 text-[11px] font-mono text-zinc-400">
+                  <div>
+                    <span class="text-[9px] text-zinc-500 block uppercase">LATERAL GAP</span>
+                    <span id="driverDefGap" class="text-white font-semibold">+0.354s</span>
+                  </div>
+                  <div>
+                    <span class="text-[9px] text-zinc-500 block uppercase">TYRE STATUS</span>
+                    <span id="driverDefTyre" class="text-yellow-400 font-semibold">HARD 39L</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Ruling Badge Row -->
+            <div class="flex flex-wrap items-center justify-between p-2.5 rounded bg-zinc-950 border border-zinc-900 gap-2">
+              <div class="flex items-center space-x-2">
+                <span id="verdictRulingBadge" class="px-2 py-0.5 rounded text-xs font-mono font-bold uppercase tracking-wider bg-red-950 text-red-300 border border-red-500">
+                  PENALIZED (10s)
+                </span>
+                <span id="rulingCategoryText" class="text-xs font-mono text-zinc-300">
+                  Causing a collision • FIA Doc 65
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Precedent AI Strategy Wall -->
+          <div class="lg:col-span-5 f1-subcard p-4 space-y-2.5 bg-zinc-950/60">
+            <div class="flex items-center justify-between border-b f1-divider-red pb-1.5">
+              <span class="text-[10px] font-mono uppercase tracking-widest text-red-400 font-bold">
+                FIA STEWARDS | PRECEDENT STRATEGY
+              </span>
+              <span class="text-[9px] font-mono text-zinc-500 uppercase">ARTICLE 2.1</span>
+            </div>
+
+            <p id="plainEnglishExplanation" class="text-xs text-zinc-300 leading-relaxed font-normal">
+              Car was ruled penalized, but the closest historical precedent had identical entry speed and resulted in No Action.
+            </p>
+
+            <div id="strategyDifferentiatorBox" class="p-2 rounded bg-red-950/20 border border-red-900/60 space-y-1">
+              <div class="flex items-center justify-between text-[10px] font-mono">
+                <span class="text-red-400 font-semibold" id="diffMetricTitle">Apex Overlap %</span>
+                <span id="diffMetricComparison" class="text-white font-bold bg-red-950/60 px-1.5 py-0.2 rounded border border-red-600/50">
+                  48% vs 62%
+                </span>
+              </div>
+              <p id="diffDetailText" class="text-[10px] text-zinc-400 font-mono">
+                Lawson reached cockpit overlap threshold (50%); Piastri fell short.
+              </p>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- SECTION 2: UNDERCUT & CONSISTENCY THREAT MONITOR -->
+        <section id="sectionThreat" class="f1-panel p-5 space-y-3.5">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b f1-divider-red pb-2.5">
+            <div class="flex items-center space-x-2">
+              <span class="text-xs font-mono font-bold text-white uppercase tracking-widest display-font">
+                CONSISTENCY & THREAT MONITOR
+              </span>
+            </div>
+            <div id="undercutThreatBadge" class="flex items-center space-x-2 px-2.5 py-0.5 rounded bg-red-950/80 border border-red-500 text-red-300 text-[10px] font-mono font-bold uppercase tracking-widest">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+              <span id="threatBadgeText">THREAT DETECTED • SPLIT VERDICT</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Target Threat Box -->
+            <div class="f1-subcard p-3.5 space-y-2 border-red-900/60">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="text-red-400 font-bold" id="targetThreatHeader">TARGET INCIDENT</span>
+                <span id="targetThreatRuling" class="text-red-300 font-bold px-2 py-0.5 rounded bg-red-950 border border-red-800">PENALIZED 10s</span>
+              </div>
+              <p id="targetThreatDetails" class="text-xs text-zinc-300 font-mono">
+                Piastri Turn 1 Brazil Sprint • Overlap: 48% • Closing speed: 28 km/h
+              </p>
+              <div class="text-[10px] font-mono text-zinc-500">
+                RATIONALE: <span class="italic text-zinc-400" id="targetThreatRationale">"Contact occurred with Car 30; failed to establish sufficient apex overlap."</span>
+              </div>
+            </div>
+
+            <!-- Matched Precedent Box -->
+            <div class="f1-subcard p-3.5 space-y-2 border-zinc-800">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="text-emerald-400 font-bold" id="precedentThreatHeader">CLOSEST HISTORICAL PRECEDENT</span>
+                <span id="precedentThreatRuling" class="text-emerald-300 font-bold px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800">NO ACTION</span>
+              </div>
+              <p id="precedentThreatDetails" class="text-xs text-zinc-300 font-mono">
+                Lawson vs Perez Las Vegas 2024 • Overlap: 62% • Closing speed: 26 km/h
+              </p>
+              <div class="text-[10px] font-mono text-zinc-500">
+                RATIONALE: <span class="italic text-zinc-400" id="precedentThreatRationale">"Car established 62% overlap prior to apex; racing room required."</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SECTION 3: VISUALIZERS (Pace Telemetry Chart & 2D Apex Simulator) -->
+        <section id="sectionVisualizers" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          
+          <!-- Speed Telemetry Chart -->
+          <div id="widgetTelemetryChart" class="lg:col-span-7 f1-panel p-5 space-y-3">
+            <div class="flex items-center justify-between border-b f1-divider-red pb-2">
+              <div class="flex items-center space-x-2">
+                <span class="text-xs font-mono font-bold text-white uppercase tracking-widest display-font">SPEED TELEMETRY & PACE TRACE</span>
+                <span class="text-[10px] font-mono text-zinc-500">(-3s TO +2s APEX)</span>
+              </div>
+              <button onclick="toggleFullscreen('widgetTelemetryChart')" title="Fullscreen" class="fullscreen-btn text-zinc-500 hover:text-white">
+                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+
+            <div class="chart-viewport h-48 w-full bg-zinc-950/80 rounded-lg border border-zinc-900 p-2">
+              <canvas id="telemetryChart"></canvas>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-[11px] font-mono">
+              <span class="flex items-center space-x-1.5">
+                <span class="w-2.5 h-1 bg-red-500 rounded-full"></span>
+                <span class="text-zinc-200">Attacker Speed</span>
+              </span>
+              <span class="flex items-center space-x-1.5">
+                <span class="w-2.5 h-1 bg-sky-400 rounded-full"></span>
+                <span class="text-zinc-200">Defender Speed</span>
+              </span>
+              <span class="flex items-center space-x-1.5">
+                <span class="w-2.5 h-1 bg-yellow-400 rounded-full"></span>
+                <span class="text-zinc-200">Lateral Gap (m)</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- 2D Apex Overlap Simulator -->
+          <div id="widgetApex" class="lg:col-span-5 f1-panel p-5 space-y-3">
+            <div class="flex items-center justify-between border-b f1-divider-red pb-2">
+              <div class="flex items-center space-x-2">
+                <span class="text-xs font-mono font-bold text-white uppercase tracking-widest display-font">2D APEX OVERLAP SIMULATOR</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="replayCanvasAnimation()" class="f1-box-btn py-0.5 px-2">REPLAY</button>
+                <button onclick="toggleFullscreen('widgetApex')" title="Fullscreen" class="fullscreen-btn text-zinc-500 hover:text-white">
+                  <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="canvas-viewport relative w-full h-48 bg-zinc-950 rounded-lg border border-zinc-900 overflow-hidden flex items-center justify-center">
+              <canvas id="apexCanvas" class="w-full h-full"></canvas>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] font-mono text-zinc-400">
+              <span class="flex items-center space-x-3">
+                <span class="flex items-center space-x-1"><span class="w-2 h-1 bg-red-500 rounded-sm"></span><span>Atk</span></span>
+                <span class="flex items-center space-x-1"><span class="w-2 h-1 bg-sky-500 rounded-sm"></span><span>Def</span></span>
+              </span>
+              <span id="canvasOverlapPill" class="font-bold text-[10px] px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-600/60">48% OVERLAP</span>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- SECTION 4: TIMING TOWER TABLE (Authentic F1 Timing Grid) -->
+        <section id="sectionTower" class="f1-panel p-5 space-y-3.5">
+          <div class="flex items-center justify-between border-b f1-divider-red pb-2.5">
+            <div class="flex items-center space-x-3">
+              <h3 class="display-font font-bold text-sm tracking-wider text-white">TIMING TOWER — NEAREST PRECEDENTS</h3>
+              <span id="activePrecedentsCount" class="text-[9px] font-mono px-2 py-0.2 rounded bg-zinc-900 text-zinc-400 border border-zinc-800">5 CASES</span>
+            </div>
+            <span class="text-[10px] font-mono text-zinc-500 hidden sm:inline">L2 NORMALIZED VECTOR DISTANCE</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead>
+                <tr class="border-b border-zinc-800 text-[10px] text-zinc-500 uppercase tracking-wider">
+                  <th class="py-2 px-2.5">POS</th>
+                  <th class="py-2 px-2.5">INCIDENT / DRIVER</th>
+                  <th class="py-2 px-2.5">CIRCUIT & CORNER</th>
+                  <th class="py-2 px-2.5">L2 DIST</th>
+                  <th class="py-2 px-2.5">OVERLAP</th>
+                  <th class="py-2 px-2.5">SPEED DELTA</th>
+                  <th class="py-2 px-2.5">RULING</th>
+                  <th class="py-2 px-2.5 text-right">INSPECT</th>
+                </tr>
+              </thead>
+              <tbody id="timingTowerBody" class="divide-y divide-zinc-900/80 text-zinc-300">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- SIDE-BY-SIDE MODAL DEEP DIVE -->
+  <div id="compareModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-md">
+    <div class="f1-panel w-full max-w-3xl max-h-[85vh] overflow-y-auto p-5 sm:p-6 space-y-4">
+      <div class="flex items-center justify-between border-b f1-divider-red pb-3">
+        <div>
+          <span class="text-[10px] font-mono font-bold text-red-500 uppercase tracking-widest">DIRECT CASE INSPECTION</span>
+          <h3 class="text-base font-extrabold text-white display-font">Target Dispute vs Matched Precedent</h3>
+        </div>
+        <button onclick="closeCompareModal()" class="w-7 h-7 rounded bg-zinc-900 hover:bg-red-950 flex items-center justify-center text-zinc-400 hover:text-white transition border border-zinc-800">
+          ✕
+        </button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs" id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    let currentIncidentId = null;
+    let currentReport = null;
+    let originalIncidentId = null;   // Preserves the initially loaded incident ID for reset
+    let originalReport = null;       // Preserves the pristine report before What-If modifications
+    let telemetryChartInstance = null;
+    let animFrameId = null;
+    let simDebounceTimer = null;
+    let activeFullscreenId = null;
+
+    async function initApp() {
+      if (window.lucide) lucide.createIcons();
+      await loadIncidentList();
+      window.addEventListener('resize', handleResize);
+    }
+
+    function resetToEmptyState() {
+      if (activeFullscreenId) toggleFullscreen(activeFullscreenId);
+      closeCompareModal();
+      clearTimeout(simDebounceTimer);
+      currentIncidentId = null;
+      currentReport = null;
+      originalIncidentId = null;
+      originalReport = null;
+      document.getElementById('incidentSelect').value = '';
+      document.getElementById('emptyStateView').classList.remove('hidden');
+      document.getElementById('activeWorkspaceView').classList.add('hidden');
+    }
+
+    async function resetLayoutToDefault() {
+      if (activeFullscreenId) toggleFullscreen(activeFullscreenId);
+      closeCompareModal();
+      clearTimeout(simDebounceTimer);
+      switchViewMode('all');
+      if (originalIncidentId) {
+        // Re-load the original incident from scratch (restores pristine report)
+        await onIncidentSelected(originalIncidentId);
+        document.getElementById('incidentSelect').value = originalIncidentId;
+      } else {
+        resetToEmptyState();
+      }
+    }
+
+    function handleResize() {
+      if (currentReport) {
+        drawApexSimulation(currentReport.target_incident.overlap_pct_at_apex, currentReport.target_incident.had_inside_line);
+      }
+      if (telemetryChartInstance) {
+        telemetryChartInstance.resize();
+      }
+    }
+
+    // WORKSPACE FOCUS / VIEW SWITCHER (Less Clutter Mode)
+    function switchViewMode(mode) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById('viewTab' + mode.charAt(0).toUpperCase() + mode.slice(1));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const secDrivers = document.getElementById('sectionDrivers');
+      const secThreat = document.getElementById('sectionThreat');
+      const secVisualizers = document.getElementById('sectionVisualizers');
+      const secTower = document.getElementById('sectionTower');
+
+      if (!secDrivers) return;
+
+      if (mode === 'all') {
+        [secDrivers, secThreat, secVisualizers, secTower].forEach(s => s.classList.remove('hidden'));
+      } else if (mode === 'telem') {
+        secDrivers.classList.add('hidden');
+        secThreat.classList.add('hidden');
+        secVisualizers.classList.remove('hidden');
+        secTower.classList.add('hidden');
+      } else if (mode === 'threat') {
+        secDrivers.classList.remove('hidden');
+        secThreat.classList.remove('hidden');
+        secVisualizers.classList.add('hidden');
+        secTower.classList.add('hidden');
+      } else if (mode === 'tower') {
+        secDrivers.classList.add('hidden');
+        secThreat.classList.add('hidden');
+        secVisualizers.classList.add('hidden');
+        secTower.classList.remove('hidden');
+      }
+
+      setTimeout(() => {
+        if (telemetryChartInstance) telemetryChartInstance.resize();
+        if (currentReport) drawApexSimulation(currentReport.target_incident.overlap_pct_at_apex, currentReport.target_incident.had_inside_line);
+      }, 50);
+    }
+
+    // FULLSCREEN TOGGLE SYSTEM
+    function toggleFullscreen(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+
+      const isCurrentlyFullscreen = el.classList.contains('is-fullscreen');
+      const btn = el.querySelector('.fullscreen-btn');
+
+      if (isCurrentlyFullscreen) {
+        el.classList.remove('is-fullscreen');
+        document.body.classList.remove('overflow-hidden');
+        activeFullscreenId = null;
+        if (btn) {
+          btn.innerHTML = '<i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>';
+          btn.title = "Toggle Full Screen";
+        }
+        const canvasBox = el.querySelector('.canvas-viewport');
+        if (canvasBox) canvasBox.style.height = '';
+        const chartBox = el.querySelector('.chart-viewport');
+        if (chartBox) chartBox.style.height = '';
+      } else {
+        if (activeFullscreenId && activeFullscreenId !== elementId) {
+          toggleFullscreen(activeFullscreenId);
+        }
+        el.classList.add('is-fullscreen');
+        document.body.classList.add('overflow-hidden');
+        activeFullscreenId = elementId;
+        if (btn) {
+          btn.innerHTML = '<i data-lucide="minimize-2" class="w-3.5 h-3.5"></i>';
+          btn.title = "Exit Full Screen (Esc)";
+        }
+        const canvasBox = el.querySelector('.canvas-viewport');
+        if (canvasBox) canvasBox.style.height = '62vh';
+        const chartBox = el.querySelector('.chart-viewport');
+        if (chartBox) chartBox.style.height = '62vh';
+      }
+
+      if (window.lucide) lucide.createIcons();
+
+      setTimeout(() => {
+        if (elementId === 'widgetApex' && currentReport) {
+          drawApexSimulation(currentReport.target_incident.overlap_pct_at_apex, currentReport.target_incident.had_inside_line);
+        }
+        if ((elementId === 'widgetTelemetryChart' || elementId === 'pitWallConsole') && telemetryChartInstance) {
+          telemetryChartInstance.resize();
+        }
+      }, 50);
+    }
+
+    async function loadIncidentList() {
+      try {
+        const res = await fetch('/api/incidents');
+        const incidents = await res.json();
+        const select = document.getElementById('incidentSelect');
+        select.innerHTML = '<option value="">-- CHOOSE INCIDENT --</option>';
+        incidents.forEach(inc => {
+          const opt = document.createElement('option');
+          opt.value = inc.id;
+          opt.textContent = `${inc.year} ${inc.round_name} • ${inc.name} [${inc.ruling.toUpperCase()}]`;
+          select.appendChild(opt);
+        });
+      } catch (err) {
+        console.error('Failed to load incidents:', err);
+      }
+    }
+
+    async function loadDemoScenario(incidentId) {
+      document.getElementById('incidentSelect').value = incidentId;
+      await onIncidentSelected(incidentId);
+    }
+
+    async function onIncidentSelected(incidentId) {
+      if (!incidentId) {
+        resetToEmptyState();
+        return;
+      }
+      clearTimeout(simDebounceTimer);
+      currentIncidentId = incidentId;
+      originalIncidentId = incidentId;  // Store for reset
+      document.getElementById('emptyStateView').classList.add('hidden');
+      document.getElementById('activeWorkspaceView').classList.remove('hidden');
+
+      await evaluateIncident(incidentId);
+      originalReport = JSON.parse(JSON.stringify(currentReport));  // Deep-clone pristine report
+      await loadTelemetryChart(incidentId);
+      syncSimulatorInputs();
+    }
+
+    async function evaluateIncident(incidentId) {
+      try {
+        const res = await fetch('/api/incidents/match', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ incident_id: incidentId, k: 5 })
+        });
+        const report = await res.json();
+        currentReport = report;
+        renderReport(report);
+        drawApexSimulation(report.target_incident.overlap_pct_at_apex, report.target_incident.had_inside_line);
+      } catch (err) {
+        console.error('Error matching incident:', err);
+      }
+    }
+
+    function renderReport(report) {
+      const target = report.target_incident;
+      const status = report.verdict_status;
+
+      // Header Bar
+      document.getElementById('grandPrixTitle').textContent = `${target.year} ${target.round_name}`;
+      document.getElementById('circuitSubText').textContent = `TURN ${target.corner} (${target.corner_type.toUpperCase()}) • ${target.session.toUpperCase()} LAP ${target.lap}`;
+      document.getElementById('headerLapCurrent').textContent = target.lap;
+      document.getElementById('headerTurnNumber').textContent = `T${target.corner}`;
+      document.getElementById('headerTurnType').textContent = target.corner_type.toUpperCase();
+
+      // Drivers
+      document.getElementById('attackerDriverName').textContent = target.driver_attacking || 'ATTACKER';
+      document.getElementById('defenderDriverName').textContent = target.driver_defending || 'DEFENDER';
+      const atkBadge = document.getElementById('attackerNumBadge');
+      if (atkBadge) atkBadge.textContent = target.driver_attacking ? `#${target.driver_attacking}` : '#81';
+      const defBadge = document.getElementById('defenderNumBadge');
+      if (defBadge) defBadge.textContent = target.driver_defending ? `#${target.driver_defending}` : '#30';
+      document.getElementById('driverAtkSpeed').textContent = `+${target.closing_speed_delta.toFixed(1)} km/h`;
+      document.getElementById('driverAtkLine').textContent = target.had_inside_line ? 'INSIDE' : 'OUTSIDE';
+      document.getElementById('driverDefGap').textContent = `+${(target.closing_speed_delta * 0.015).toFixed(3)}s`;
+      const defTyre = document.getElementById('driverDefTyre');
+      if (defTyre) defTyre.textContent = target.tyre_age_delta !== undefined ? `DELTA ${target.tyre_age_delta > 0 ? '+' : ''}${target.tyre_age_delta}L` : 'HARD 39L';
+
+      // Ruling Badge
+      const rulingBadge = document.getElementById('verdictRulingBadge');
+      if (target.ruling === 'penalized') {
+        rulingBadge.className = 'px-2.5 py-1 rounded text-xs font-mono font-bold uppercase tracking-wider bg-red-950/90 text-red-300 border border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.4)]';
+        rulingBadge.textContent = `PENALIZED (${target.penalty_seconds}s)`;
+      } else {
+        rulingBadge.className = 'px-2.5 py-1 rounded text-xs font-mono font-bold uppercase tracking-wider bg-emerald-950/90 text-emerald-300 border border-emerald-500';
+        rulingBadge.textContent = 'NO ACTION';
+      }
+
+      document.getElementById('rulingCategoryText').textContent = `${(target.ruling_category || 'racing_incident').replace(/_/g, ' ').toUpperCase()} • ${target.fia_doc_title || 'FIA Official Document'}`;
+      document.getElementById('fiaDocBtn').href = target.fia_doc_url;
+
+      // AI Strategy Wall
+      const plainExp = document.getElementById('plainEnglishExplanation');
+      const diffBox = document.getElementById('strategyDifferentiatorBox');
+
+      if (report.differentiating_factors && report.differentiating_factors.length > 0) {
+        const topDiff = report.differentiating_factors[0];
+        diffBox.classList.remove('hidden');
+        document.getElementById('diffMetricTitle').textContent = topDiff.display_name;
+        document.getElementById('diffMetricComparison').textContent = `${topDiff.target_value} vs ${topDiff.precedent_value}`;
+        document.getElementById('diffDetailText').textContent = topDiff.explanation;
+      } else {
+        diffBox.classList.add('hidden');
+      }
+
+      // Threat Monitor
+      const threatBadge = document.getElementById('undercutThreatBadge');
+      const threatText = document.getElementById('threatBadgeText');
+      const flagBadge = document.getElementById('flagStatusBadge');
+      const flagText = document.getElementById('flagStatusText');
+
+      if (status === 'split') {
+        plainExp.textContent = `Car was ruled '${target.ruling.toUpperCase()}', but the closest historical precedent had identical conditions and was cleared.`;
+        threatBadge.className = 'flex items-center space-x-2 px-2.5 py-1 rounded bg-red-950/80 border border-red-500 text-red-300 text-[10px] font-mono font-bold uppercase tracking-widest animate-pulse';
+        threatText.textContent = 'THREAT DETECTED • SPLIT VERDICT';
+        flagBadge.className = 'flex items-center space-x-1.5 px-2.5 py-1 rounded bg-red-950 border border-red-500 text-red-300 text-[11px] font-bold uppercase tracking-wider';
+        flagText.textContent = 'INVESTIGATION';
+      } else if (status === 'consistent') {
+        plainExp.textContent = `All nearest geometric precedents uniformly ruled '${report.majority_ruling.toUpperCase()}'. Stewarding precedent is fully aligned.`;
+        threatBadge.className = 'flex items-center space-x-2 px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-500 text-emerald-300 text-[10px] font-mono font-bold uppercase tracking-widest';
+        threatText.textContent = 'PRECEDENT ALIGNED • CONSISTENT';
+        flagBadge.className = 'flex items-center space-x-1.5 px-2.5 py-1 rounded bg-emerald-950 border border-emerald-500 text-emerald-300 text-[11px] font-bold uppercase tracking-wider';
+        flagText.textContent = 'GREEN FLAG';
+      } else {
+        plainExp.textContent = `Telemetry distance (${report.novelty_score}) exceeds standard proximity threshold (0.85). This maneuver sits outside historical precedent.`;
+        threatBadge.className = 'flex items-center space-x-2 px-2.5 py-1 rounded bg-yellow-950/80 border border-yellow-500 text-yellow-300 text-[10px] font-mono font-bold uppercase tracking-widest';
+        threatText.textContent = 'NOVEL MANEUVER • UNPRECEDENTED';
+        flagBadge.className = 'flex items-center space-x-1.5 px-2.5 py-1 rounded bg-yellow-950 border border-yellow-500 text-yellow-300 text-[11px] font-bold uppercase tracking-wider';
+        flagText.textContent = 'YELLOW FLAG';
+      }
+
+      document.getElementById('targetThreatHeader').textContent = `${target.driver_attacking} vs ${target.driver_defending} (${target.year})`;
+      document.getElementById('targetThreatRuling').textContent = `${target.ruling.toUpperCase()}${target.penalty_seconds ? ` (${target.penalty_seconds}s)` : ''}`;
+      document.getElementById('targetThreatDetails').textContent = `${target.round_name} • Overlap: ${Math.round(target.overlap_pct_at_apex * 100)}% • Closing: ${target.closing_speed_delta.toFixed(1)} km/h`;
+      document.getElementById('targetThreatRationale').textContent = `"${target.steward_rationale}"`;
+
+      if (report.matches && report.matches.length > 0) {
+        const topPrec = report.matches[0].precedent;
+        document.getElementById('precedentThreatHeader').textContent = `${topPrec.name} (${topPrec.year})`;
+        document.getElementById('precedentThreatRuling').textContent = topPrec.ruling.toUpperCase();
+        document.getElementById('precedentThreatDetails').textContent = `${topPrec.round_name} • Overlap: ${Math.round(topPrec.overlap_pct_at_apex * 100)}% • Closing: ${topPrec.closing_speed_delta.toFixed(1)} km/h`;
+        document.getElementById('precedentThreatRationale').textContent = `"${topPrec.steward_rationale}"`;
+      }
+
+      // Timing Tower Rows
+      const tbody = document.getElementById('timingTowerBody');
+      tbody.innerHTML = '';
+
+      report.matches.forEach((m, idx) => {
+        const p = m.precedent;
+        const tr = document.createElement('tr');
+        tr.className = `hover:bg-red-950/20 transition ${idx === 0 ? 'bg-zinc-950 font-semibold text-white' : ''}`;
+        
+        const rulingBadgeClass = p.ruling === 'penalized'
+          ? 'bg-red-950/80 text-red-300 border-red-800'
+          : 'bg-emerald-950/80 text-emerald-300 border-emerald-800';
+
+        tr.innerHTML = `
+          <td class="py-2 px-2 font-bold ${idx === 0 ? 'text-red-400' : 'text-zinc-500'}">P${idx + 1}</td>
+          <td class="py-2 px-2 font-bold text-white flex items-center space-x-1.5">
+            <span class="w-3.5 h-3.5 rounded-full bg-zinc-800 border border-zinc-700 text-[8px] flex items-center justify-center font-bold text-zinc-300">H</span>
+            <span class="truncate">${p.name}</span>
+          </td>
+          <td class="py-2 px-2 text-zinc-400">${p.year} ${p.round_name} T${p.corner}</td>
+          <td class="py-2 px-2 text-yellow-400">${m.distance.toFixed(3)}</td>
+          <td class="py-2 px-2 ${Math.abs(p.overlap_pct_at_apex - target.overlap_pct_at_apex) > 0.1 ? 'text-yellow-400 font-bold' : 'text-zinc-300'}">${Math.round(p.overlap_pct_at_apex * 100)}%</td>
+          <td class="py-2 px-2 text-zinc-300">${p.closing_speed_delta.toFixed(1)} km/h</td>
+          <td class="py-2 px-2">
+            <span class="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase border ${rulingBadgeClass}">
+              ${p.ruling.toUpperCase()}
+            </span>
+          </td>
+          <td class="py-2 px-2 text-right">
+            <button onclick="openPrecedentDeepDive(${idx})" class="f1-box-btn">
+              VIEW ↗
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Circular Radial Gauge
+      const overlapPct = target.overlap_pct_at_apex;
+      const circumference = 238.76;
+      const offset = circumference - (overlapPct * circumference);
+      const ring = document.getElementById('gaugeProgressRing');
+      ring.style.strokeDashoffset = offset;
+
+      document.getElementById('gaugeOverlapVal').textContent = `${Math.round(overlapPct * 100)}%`;
+      document.getElementById('gaugeSpeedDelta').textContent = `${target.closing_speed_delta.toFixed(1)} km/h`;
+
+      const condPill = document.getElementById('gaugeConditionPill');
+      const threshSub = document.getElementById('gaugeThresholdSub');
+      const threshStatus = document.getElementById('gaugeThresholdStatus');
+      const verdictEst = document.getElementById('stewardVerdictEstimate');
+
+      if (overlapPct >= 0.5) {
+        ring.style.stroke = '#22c55e';
+        condPill.className = 'font-bold text-emerald-400';
+        condPill.textContent = 'THRESHOLD MET';
+        threshSub.className = 'text-[8px] font-mono text-emerald-400 font-semibold';
+        threshSub.textContent = 'COCKPIT MET';
+        threshStatus.className = 'text-emerald-400 font-bold';
+        threshStatus.textContent = `AHEAD (+${Math.round((overlapPct - 0.5) * 100)}%)`;
+        verdictEst.className = 'text-xs font-mono font-bold text-emerald-400';
+        verdictEst.textContent = 'CLEARED / RACING ROOM';
+      } else {
+        ring.style.stroke = '#ef4444';
+        condPill.className = 'font-bold text-red-400';
+        condPill.textContent = 'CRITICAL DEFICIT';
+        threshSub.className = 'text-[8px] font-mono text-yellow-400 font-semibold';
+        threshSub.textContent = '50% MIN';
+        threshStatus.className = 'text-red-400 font-bold';
+        threshStatus.textContent = `BEHIND (-${Math.round((0.5 - overlapPct) * 100)}%)`;
+        verdictEst.className = 'text-xs font-mono font-bold text-red-400';
+        verdictEst.textContent = 'PENALTY RISK HIGH';
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // 2D CANVAS ANIMATOR
+    function drawApexSimulation(overlapPct, hadInside) {
+      const canvas = document.getElementById('apexCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+
+      if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+      }
+      ctx.save();
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+      ctx.clearRect(0, 0, w, h);
+
+      // Track Asphalt
+      ctx.lineWidth = 14;
+      ctx.strokeStyle = '#18181b';
+      ctx.beginPath();
+      ctx.arc(w / 2, -15, 90, 0.2 * Math.PI, 0.8 * Math.PI, false);
+      ctx.stroke();
+
+      // Alternating F1 Red & White Painted Kerb Blocks
+      const kerbRadius = 90;
+      const kerbSegments = 16;
+      const startAngle = 0.22 * Math.PI;
+      const endAngle = 0.78 * Math.PI;
+      const stepAngle = (endAngle - startAngle) / kerbSegments;
+
+      for (let i = 0; i < kerbSegments; i++) {
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = (i % 2 === 0) ? '#ef4444' : '#fafafa';
+        ctx.beginPath();
+        ctx.arc(w / 2, -15, kerbRadius, startAngle + i * stepAngle, startAngle + (i + 1) * stepAngle, false);
+        ctx.stroke();
+      }
+
+      const apexX = w / 2;
+      const apexY = 80;
+
+      // Apex Point
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(apexX, apexY, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = '#facc15';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(apexX, apexY, 6.5, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // FIA Article 2.1 Cockpit Reference Line (Yellow Dashed)
+      ctx.strokeStyle = '#facc15';
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(apexX - 55, apexY - 22);
+      ctx.lineTo(apexX + 55, apexY + 22);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      const carLen = 46;
+      const carWid = 16;
+      const defX = apexX + 15;
+      const defY = apexY - 10;
+
+      // Defending Car (Cyan Blue)
+      ctx.save();
+      ctx.translate(defX, defY);
+      ctx.rotate(0.35);
+      // Wheels
+      ctx.fillStyle = '#09090b';
+      ctx.fillRect(-carLen / 2 + 4, -carWid / 2 - 3, 7, 3);
+      ctx.fillRect(carLen / 2 - 11, -carWid / 2 - 3, 7, 3);
+      ctx.fillRect(-carLen / 2 + 4, carWid / 2, 7, 3);
+      ctx.fillRect(carLen / 2 - 11, carWid / 2, 7, 3);
+      // Chassis
+      ctx.fillStyle = '#0284c7';
+      roundRect(ctx, -carLen / 2, -carWid / 2, carLen, carWid, 3);
+      ctx.fill();
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      // Wings
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(carLen / 2 - 3, -carWid / 2 - 1, 3, carWid + 2);
+      ctx.fillRect(-carLen / 2, -carWid / 2 - 1, 3, carWid + 2);
+      // Cockpit
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(0, 0, 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Attacking Car (Ferrari Red)
+      const offset = (overlapPct - 0.5) * carLen * 0.9;
+      const atkX = apexX - 16 + offset * 0.8;
+      const atkY = apexY + 12 - offset * 0.4;
+
+      ctx.save();
+      ctx.translate(atkX, atkY);
+      ctx.rotate(0.42);
+      // Wheels
+      ctx.fillStyle = '#09090b';
+      ctx.fillRect(-carLen / 2 + 4, -carWid / 2 - 3, 7, 3);
+      ctx.fillRect(carLen / 2 - 11, -carWid / 2 - 3, 7, 3);
+      ctx.fillRect(-carLen / 2 + 4, carWid / 2, 7, 3);
+      ctx.fillRect(carLen / 2 - 11, carWid / 2, 7, 3);
+      // Chassis
+      ctx.fillStyle = '#dc2626';
+      roundRect(ctx, -carLen / 2, -carWid / 2, carLen, carWid, 3);
+      ctx.fill();
+      ctx.strokeStyle = '#f87171';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      // Wings
+      ctx.fillStyle = '#f87171';
+      ctx.fillRect(carLen / 2 - 3, -carWid / 2 - 1, 3, carWid + 2);
+      ctx.fillRect(-carLen / 2, -carWid / 2 - 1, 3, carWid + 2);
+      // Cockpit
+      ctx.fillStyle = '#450a0a';
+      ctx.beginPath();
+      ctx.arc(0, 0, 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.restore();
+
+      const pill = document.getElementById('canvasOverlapPill');
+      if (pill) {
+        pill.textContent = `${Math.round(overlapPct * 100)}% OVERLAP (${overlapPct >= 0.5 ? 'COCKPIT MET' : 'BEHIND COCKPIT'})`;
+        pill.className = `font-bold text-[10px] px-2 py-0.5 rounded border ${overlapPct >= 0.5 ? 'bg-emerald-950 text-emerald-300 border-emerald-600/60' : 'bg-red-950 text-red-300 border-red-600/60'}`;
+      }
+    }
+
+    function roundRect(ctx, x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    function replayCanvasAnimation() {
+      if (!currentReport) return;
+      const finalOverlap = currentReport.target_incident.overlap_pct_at_apex;
+      const hadInside = currentReport.target_incident.had_inside_line;
+      let step = 0;
+      const totalSteps = 24;
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      function animate() {
+        step++;
+        const currentO = (step / totalSteps) * finalOverlap;
+        drawApexSimulation(currentO, hadInside);
+        if (step < totalSteps) {
+          animFrameId = requestAnimationFrame(animate);
+        }
+      }
+      animate();
+    }
+
+    // TELEMETRY CHART
+    async function loadTelemetryChart(incidentId) {
+      try {
+        const res = await fetch(`/api/incidents/${incidentId}/telemetry`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const traces = data.traces;
+
+        const labels = traces.map(t => (t.time > 0 ? `+${t.time}s` : `${t.time}s`));
+        const atkSpeed = traces.map(t => t.speed_attacker);
+        const defSpeed = traces.map(t => t.speed_defender);
+        const gapMeters = traces.map(t => t.lateral_gap_meters);
+
+        const ctx = document.getElementById('telemetryChart').getContext('2d');
+        if (telemetryChartInstance) telemetryChartInstance.destroy();
+
+        telemetryChartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Attacker Speed',
+                data: atkSpeed,
+                borderColor: '#ef4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.05)',
+                borderWidth: 2.2,
+                tension: 0.35,
+                pointRadius: 0,
+                yAxisID: 'y'
+              },
+              {
+                label: 'Defender Speed',
+                data: defSpeed,
+                borderColor: '#38bdf8',
+                backgroundColor: 'rgba(56, 189, 248, 0.05)',
+                borderWidth: 2.0,
+                tension: 0.35,
+                pointRadius: 0,
+                yAxisID: 'y'
+              },
+              {
+                label: 'Lateral Gap',
+                data: gapMeters,
+                borderColor: '#facc15',
+                borderWidth: 1.6,
+                borderDash: [3, 3],
+                tension: 0.3,
+                pointRadius: 0,
+                yAxisID: 'y1'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 250 },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: '#09090b',
+                titleColor: '#fafafa',
+                bodyColor: '#a1a1aa',
+                borderColor: '#ef4444',
+                borderWidth: 1,
+                padding: 8,
+                cornerRadius: 6,
+                titleFont: { size: 11, family: 'Inter' },
+                bodyFont: { size: 10, family: 'JetBrains Mono' }
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                ticks: { color: '#71717a', font: { size: 10, family: 'JetBrains Mono' } }
+              },
+              y: {
+                type: 'linear',
+                position: 'left',
+                grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                ticks: { color: '#f87171', font: { size: 10, family: 'JetBrains Mono' } }
+              },
+              y1: {
+                type: 'linear',
+                position: 'right',
+                grid: { display: false },
+                ticks: { color: '#facc15', font: { size: 10, family: 'JetBrains Mono' } }
+              }
+            }
+          }
+        });
+      } catch (err) {
+        console.error('Failed to load telemetry:', err);
+      }
+    }
+
+    // WHAT-IF LAB SLIDERS
+    function syncSimulatorInputs() {
+      if (!currentReport) return;
+      const t = currentReport.target_incident;
+      document.getElementById('simOverlapInput').value = Math.round(t.overlap_pct_at_apex * 100);
+      document.getElementById('simOverlapVal').textContent = `${Math.round(t.overlap_pct_at_apex * 100)}%`;
+      document.getElementById('simSpeedInput').value = Math.round(t.closing_speed_delta);
+      document.getElementById('simSpeedVal').textContent = `${Math.round(t.closing_speed_delta)} km/h`;
+      document.getElementById('simInsideInput').checked = (t.had_inside_line === 1);
+      document.getElementById('simContactInput').checked = (t.contact_occurred === 1);
+    }
+
+    function resetSimulatorToTarget() {
+      clearTimeout(simDebounceTimer);
+      if (originalReport) {
+        // Restore the pristine report from the original incident evaluation
+        currentReport = JSON.parse(JSON.stringify(originalReport));
+        renderReport(currentReport);
+        drawApexSimulation(currentReport.target_incident.overlap_pct_at_apex, currentReport.target_incident.had_inside_line);
+      }
+      syncSimulatorInputs();
+    }
+
+    function onSimulatorSliderInput() {
+      const overlapPct = parseFloat(document.getElementById('simOverlapInput').value) / 100.0;
+      const speed = parseFloat(document.getElementById('simSpeedInput').value);
+      const inside = document.getElementById('simInsideInput').checked ? 1 : 0;
+
+      document.getElementById('simOverlapVal').textContent = `${Math.round(overlapPct * 100)}%`;
+      document.getElementById('simSpeedVal').textContent = `${Math.round(speed)} km/h`;
+      drawApexSimulation(overlapPct, inside);
+
+      clearTimeout(simDebounceTimer);
+      simDebounceTimer = setTimeout(() => {
+        executeSimulatorQuery();
+      }, 120);
+    }
+
+    async function executeSimulatorQuery() {
+      const overlapPct = parseFloat(document.getElementById('simOverlapInput').value) / 100.0;
+      const speed = parseFloat(document.getElementById('simSpeedInput').value);
+      const inside = document.getElementById('simInsideInput').checked ? 1 : 0;
+      const contact = document.getElementById('simContactInput').checked ? 1 : 0;
+
+      try {
+        const res = await fetch('/api/incidents/match', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            corner_type: currentReport ? currentReport.target_incident.corner_type : 'hairpin',
+            closing_speed_delta: speed,
+            overlap_pct_at_apex: overlapPct,
+            had_inside_line: inside,
+            contact_occurred: contact,
+            tyre_age_delta: 0,
+            race_progression: 0.5,
+            k: 5
+          })
+        });
+        const report = await res.json();
+        currentReport = report;
+        renderReport(report);
+      } catch (err) {
+        console.error('Error running simulator query:', err);
+      }
+    }
+
+    // SIDE-BY-SIDE MODAL DEEP DIVE
+    function openPrecedentDeepDive(matchIndex) {
+      if (!currentReport || !currentReport.matches[matchIndex]) return;
+      const target = currentReport.target_incident;
+      const prec = currentReport.matches[matchIndex].precedent;
+      const modal = document.getElementById('compareModal');
+      const content = document.getElementById('modalContent');
+
+      content.innerHTML = `
+        <div class="f1-subcard p-4 space-y-3 border-l-2 border-l-red-500">
+          <div class="flex items-center justify-between border-b f1-divider-red pb-2">
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-red-400">QUERY DISPUTE</span>
+            <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold ${target.ruling === 'penalized' ? 'bg-red-950 text-red-300 border border-red-800' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'}">
+              ${target.ruling.toUpperCase()}
+            </span>
+          </div>
+          <h4 class="text-sm font-bold text-white display-font">${target.name}</h4>
+          <p class="text-[11px] text-zinc-400 font-mono">${target.year} ${target.round_name} • Turn ${target.corner} (${target.corner_type})</p>
+          <div class="space-y-1.5 text-xs pt-1">
+            <div class="flex justify-between py-1 border-b border-zinc-900"><span class="text-zinc-500">Apex Overlap:</span><span class="font-bold text-white">${Math.round(target.overlap_pct_at_apex * 100)}%</span></div>
+            <div class="flex justify-between py-1 border-b border-zinc-900"><span class="text-zinc-500">Closing Speed:</span><span class="font-bold text-white">${target.closing_speed_delta.toFixed(1)} km/h</span></div>
+            <div class="flex justify-between py-1 border-b border-zinc-900"><span class="text-zinc-500">Inside Line:</span><span class="font-bold text-white">${target.had_inside_line ? 'Held Inside' : 'Outside'}</span></div>
+            <div class="flex justify-between py-1"><span class="text-zinc-500">Collision:</span><span class="font-bold text-white">${target.contact_occurred ? 'Yes' : 'No'}</span></div>
+          </div>
+          <div class="p-2.5 bg-black/60 rounded border border-zinc-900 text-xs text-zinc-300 italic">"${target.steward_rationale}"</div>
+          <a href="${target.fia_doc_url}" target="_blank" rel="noopener noreferrer" class="f1-box-btn block text-center">Open FIA PDF ↗</a>
+        </div>
+        <div class="f1-subcard p-4 space-y-3 border-l-2 border-l-yellow-500">
+          <div class="flex items-center justify-between border-b f1-divider-red pb-2">
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-yellow-400">PRECEDENT (#${matchIndex + 1})</span>
+            <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold ${prec.ruling === 'penalized' ? 'bg-red-950 text-red-300 border border-red-800' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'}">
+              ${prec.ruling.toUpperCase()}
+            </span>
+          </div>
+          <h4 class="text-sm font-bold text-white display-font">${prec.name}</h4>
+          <p class="text-[11px] text-zinc-400 font-mono">${prec.year} ${prec.round_name} • Turn ${prec.corner} (${prec.corner_type})</p>
+          <div class="space-y-1.5 text-xs pt-1">
+            <div class="flex justify-between py-1 border-b border-zinc-900"><span class="text-zinc-500">Apex Overlap:</span><span class="font-bold ${Math.abs(prec.overlap_pct_at_apex - target.overlap_pct_at_apex) > 0.1 ? 'text-yellow-400' : 'text-white'}">${Math.round(prec.overlap_pct_at_apex * 100)}%</span></div>
+            <div class="flex justify-between py-1 border-b border-zinc-900"><span class="text-zinc-500">Closing Speed:</span><span class="font-bold text-white">${prec.closing_speed_delta.toFixed(1)} km/h</span></div>
+            <div class="flex justify-between py-1 border-b border-zinc-900"><span class="text-zinc-500">Inside Line:</span><span class="font-bold text-white">${prec.had_inside_line ? 'Held Inside' : 'Outside'}</span></div>
+            <div class="flex justify-between py-1"><span class="text-zinc-500">Collision:</span><span class="font-bold text-white">${prec.contact_occurred ? 'Yes' : 'No'}</span></div>
+          </div>
+          <div class="p-2.5 bg-black/60 rounded border border-zinc-900 text-xs text-zinc-300 italic">"${prec.steward_rationale}"</div>
+          <a href="${prec.fia_doc_url}" target="_blank" rel="noopener noreferrer" class="f1-box-btn block text-center">Open FIA PDF ↗</a>
+        </div>
+      `;
+      modal.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeCompareModal() {
+      const modal = document.getElementById('compareModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    document.getElementById('compareModal').addEventListener('click', (e) => {
+      if (e.target.id === 'compareModal') closeCompareModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      if (e.key === 'Escape') {
+        if (activeFullscreenId) {
+          toggleFullscreen(activeFullscreenId);
+        } else {
+          closeCompareModal();
+        }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>

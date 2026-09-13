@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "budget_bytes": 50000000000,
+  "used_bytes": 7486758684,
+  "sources": [
+    {
+      "id": "formula1-box",
+      "url": "https://www.kaggle.com/datasets/gazeux330000/formula1-box",
+      "license": "Apache 2.0 (publisher declaration)",
+      "labels": [
+        "car boxes",
+        "team"
+      ],
+      "kind": "F1 images",
+      "status": "acquired",
+      "archive_sha256": "50be264916c41e4af1f865e24318806c7c6e369ee52e0801cf1cdd4aaa30ae80",
+      "path": "D:\\CHATGPT\\TRACKSHIFT CODEX\\ghost-rival-studio\\data\\datasets\\formula1-box"
+    },
+    {
+      "id": "steering",
+      "url": "https://huggingface.co/datasets/daniel-saed/F1-steering-angle-dataset",
+      "license": "MIT (publisher declaration; underlying footage separately unverified)",
+      "labels": [
+        "steering wheel angle"
+      ],
+      "kind": "onboard images",
+      "status": "acquired",
+      "columns": [
+        "img_name",
+        "steering_angle",
+        "team",
+        "driver",
+        "year",
+        "track",
+        "tyre",
+        "session_time",
+        "traffic",
+        "slipstream",
+        "track_status",
+        "track_weather",
+        "steering_angle_original"
+      ],
+      "rows_available": 6632,
+      "acquired_images": 6632,
+      "path": "D:\\CHATGPT\\TRACKSHIFT CODEX\\ghost-rival-studio\\data\\datasets\\steering",
+      "reason": "Verified 6632 CSV-referenced images; 0 missing; 0 corrupt. Historical transient errors retained."
+    },
+    {
+      "id": "formula-one-cars",
+      "url": "https://www.kaggle.com/datasets/vesuvius13/formula-one-cars",
+      "license": "unverified",
+      "labels": [
+        "classification"
+      ],
+      "kind": "F1 images",
+      "status": "acquired",
+      "archive_sha256": "dcc115064c18edd5514fadf626fe6b74afe37e5711be8078f3c982351d433dff",
+      "path": "D:\\CHATGPT\\TRACKSHIFT CODEX\\ghost-rival-studio\\data\\datasets\\formula-one-cars"
+    },
+    {
+      "id": "track-limits",
+      "url": "https://universe.roboflow.com/nikshithas-workspace/f1-race-track-limits",
+      "license": "CC BY 4.0 (listing)",
+      "labels": [
+        "track_inside",
+        "track_outside"
+      ],
+      "kind": "images",
+      "status": "blocked",
+      "reason": "Listing has 124 images but no published dataset version; precise masks unverified"
+    },
+    {
+      "id": "vroom",
+      "url": "https://varun-bharadwaj.github.io/vroom/",
+      "license": "unverified",
+      "labels": [
+        "reconstruction research"
+      ],
+      "kind": "F1 onboard research",
+      "status": "reference",
+      "reason": "Linked repository returned 404; no verified downloadable footage"
+    },
+    {
+      "id": "racecar",
+      "url": "https://registry.opendata.aws/racecar-dataset/",
+      "license": "CC BY-NC 4.0",
+      "labels": [
+        "multisensor tracks"
+      ],
+      "kind": "Indy research",
+      "status": "reference",
+      "reason": "Large non-F1 sensor corpus; prioritize F1 assets within budget"
+    },
+    {
+      "id": "a2rl",
+      "url": "https://tum-avs.github.io/A2RL_Dataset_website/",
+      "license": "requires inspection",
+      "labels": [
+        "LiDAR",
+        "RADAR"
+      ],
+      "kind": "autonomous racing",
+      "status": "reference",
+      "reason": "Sensor-focused supplementary source; not F1 wheel labels"
+    },
+    {
+      "id": "carparts",
+      "url": "https://docs.ultralytics.com/datasets/segment/carparts-seg/",
+      "version": "downloaded carparts-seg.zip snapshot; archive hash in acquired-files.jsonl",
+      "license": "Ultralytics configuration AGPL-3.0; underlying image provenance not independently verified",
+      "kind": "road-car images",
+      "labels": [
+        "part polygons",
+        "wheel masks (class 22)"
+      ],
+      "status": "acquired",
+      "reason": "Experimental wheel training; road-car to F1 transfer unvalidated",
+      "perspective": "external road-car images",
+      "path": "D:/CHATGPT/TRACKSHIFT CODEX/ghost-rival-studio/data/datasets/carparts"
+    },
+    {
+      "id": "tum-racetracks",
+      "url": "https://github.com/TUMFTM/racetrack-database",
+      "license": "requires per-file review before reuse",
+      "kind": "circuit geometry reference",
+      "labels": [
+        "centerlines",
+        "approximate widths"
+      ],
+      "status": "reference",
+      "reason": "Approximate geometry; not measured legal masks or recorded driver trajectories"
+    },
+    {
+      "id": "wheels-tires-body",
+      "url": "https://universe.roboflow.com/wheeltirebody/wheels-tires-body/dataset/8",
+      "version": 8,
+      "license": "CC BY 4.0 (publisher declaration)",
+      "kind": "wheel segmentation candidate",
+      "labels": [
+        "wheel",
+        "tire",
+        "body",
+        "numeric classes"
+      ],
+      "status": "reference",
+      "reason": "375 source images; 1007 version-8 augmented images. F1 provenance unverified. Download page did not expose an archive in available web extraction; not acquired."
+    }
+  ],
+  "checked_at": 1789238680.555243
+}

@@ -1,0 +1,29 @@
+{
+  "results": {
+    "yolo11n.pt": {
+      "images": 168,
+      "tp": 56,
+      "fp": 107,
+      "fn": 109,
+      "precision": 0.34355828220858897,
+      "recall": 0.3393939393939394,
+      "brier_detection_score": 0.24518011735730694,
+      "confidence_threshold": 0.25,
+      "iou_threshold": 0.5
+    },
+    "car-detector.pt": {
+      "images": 168,
+      "tp": 120,
+      "fp": 67,
+      "fn": 45,
+      "precision": 0.6417112299465241,
+      "recall": 0.7272727272727273,
+      "brier_detection_score": 0.21160636895932095,
+      "confidence_threshold": 0.25,
+      "iou_threshold": 0.5
+    }
+  },
+  "scope": "same-broadcast chronological diagnostic validation",
+  "calibration": "Brier score diagnostic only; no calibrated event probabilities",
+  "held_out_user_video_used": false
+}
